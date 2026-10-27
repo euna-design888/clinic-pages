@@ -33,6 +33,9 @@ input:focus,textarea:focus,select:focus{border-color:var(--c);box-shadow:0 0 0 3
 .doc{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;position:relative}.doc .x{position:absolute;right:10px;top:8px;border:0;background:none;color:var(--sub);font-size:1.2rem;cursor:pointer}
 .doc .row2{margin-bottom:8px}.doc textarea{min-height:64px}
 .add{font:inherit;width:100%;padding:13px;border:1.5px dashed var(--c);border-radius:10px;background:var(--tint);color:var(--c);font-weight:700;cursor:pointer}
+.up{margin-top:8px}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}.thumbs figure{margin:0;position:relative}
+.thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block}.thumbs figcaption{font-size:.72rem;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:3px}
+.thumbs .x{position:absolute;right:4px;top:4px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;line-height:1}
 .note{background:#fff;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--sub);margin:0 0 24px}
 .nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 20px calc(12px + env(safe-area-inset-bottom));z-index:5}
 .nav .in{max-width:640px;margin:0 auto;display:flex;gap:12px;align-items:center;justify-content:space-between}
@@ -82,10 +85,18 @@ const HAVE={photo_director:"원장 사진 (진료실)",photo_place:"외관 · �
 const blank=()=>({name:"",kind:"의원",phone:"",address:"",opened:"",depts:[],deptCustom:"",tagline:"",fields:{},
   days:Object.fromEntries(DAYS.map(d=>[d,{on:d!=="일",s:"09:00",e:d==="토"?"13:00":"18:00"}])),lunch:{on:true,s:"13:00",e:"14:00"},
   doctors:[{name:"",title:"원장",spec:"",degree:"",career:""}],feats:[],featExtra:"",facilities:"",design:"B1",color:"navy",refs:"",
-  sections:["features","fields","doctors","photos","notices","nonpaid"],have:[],booking:"",kakao:"",blog:"",domain:"",notes:""});
+  sections:["features","fields","doctors","photos","notices","nonpaid"],have:[],booking:"",kakao:"",blog:"",domain:"",notes:"",
+  existing:"없음",site_url:"",place_url:"",mood:[],styleNote:"",author:"",authorRole:"원장",uploads:{}});
 let S;try{S=Object.assign(blank(),JSON.parse(localStorage.getItem("intake_v2")||"{}"))}catch{S=blank()}
+S.uploads={}; // 사진은 용량 때문에 기기 저장 안 함 (새로고침하면 다시 올림)
 let step=+(localStorage.getItem("intake_v2_step")||0);
-const save=()=>{try{localStorage.setItem("intake_v2",JSON.stringify(S));localStorage.setItem("intake_v2_step",step)}catch{}};
+const save=()=>{try{const{uploads,...rest}=S;localStorage.setItem("intake_v2",JSON.stringify(rest));localStorage.setItem("intake_v2_step",step)}catch{}};
+const MOOD=["차분한","깔끔한","따뜻한","밝은","전문적인","고급스러운","친근한","심플한"];
+const UP={docs:"간판 · 안내판 · 명함 · 진료시간표 사진",assets:"로고 · 원장 사진 · 외관/내부 사진",refs:"마음에 드는 홈페이지 캡처"};
+const upCount=()=>Object.values(S.uploads).reduce((n,a)=>n+a.length,0);
+const uploader=k=>`<div class="up"><input type="file" accept="image/*" multiple hidden data-upin="${k}"><button class="add" data-pick="${k}">📷 ${UP[k]} 올리기</button>
+<div class="thumbs">${(S.uploads[k]||[]).map((f,i)=>`<figure><img src="${f.data}" alt=""><button class="x" data-rmup="${k}.${i}">×</button><figcaption>${esc(f.name)}</figcaption></figure>`).join("")}</div>
+<span class="help">폰 사진 그대로 올리세요. 자동으로 줄여서 파일에 함께 담깁니다 (최대 12장). 새로고침하면 사진만 다시 올려야 합니다.</span></div>`;
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const sel=(k,v)=>`<select data-k="${k}">${TIMES.map(t=>`<option${t===v?" selected":""}>${t}</option>`).join("")}</select>`;
 
@@ -98,12 +109,21 @@ const STEPS=[
 <div class="q" data-req="address"><label>주소<i></i></label><input data-k="address" value="${esc(S.address)}" placeholder="도로명 주소, 층·호까지"><div class="err">주소가 필요합니다</div></div>
 <div class="q"><label>개원 시기</label><input data-k="opened" value="${esc(S.opened)}" placeholder="예: 2006년 3월"><span class="help">모르면 비워 두세요.</span></div>`},
 
-{t:"진료과목",r:()=>`<h2>진료과목</h2><p class="lead">시설·장비·인력을 갖춘 과목만 골라 주세요.</p>
+{t:"기존 채널",r:()=>`<h2>지금 운영 중인 온라인 채널</h2><p class="lead">있는 것만 적어 주세요. 거기 있는 정보는 다시 묻지 않고 가져옵니다.</p>
+<div class="q"><span class="lb">기존 홈페이지</span><div class="cards">${["없음","있음 (새로 만듦)","있음 (고쳐 씀)","모름"].map(k=>`<button class="card${S.existing===k?" on":""}" data-set="existing" data-v="${k}"><b>${k}</b></button>`).join("")}</div>
+${S.existing.startsWith("있음")?`<input data-k="site_url" value="${esc(S.site_url)}" placeholder="기존 홈페이지 주소" style="margin-top:10px">`:""}</div>
+<div class="q"><label>네이버 플레이스 주소</label><input data-k="place_url" value="${esc(S.place_url)}" placeholder="https://naver.me/... 또는 플레이스 링크"><span class="help">네이버 지도에서 병원 검색 → 공유 → 링크 복사</span></div>
+<div class="q"><label>블로그 · 인스타그램 주소</label><input data-k="blog" value="${esc(S.blog)}" placeholder="https://blog.naver.com/... , https://instagram.com/..."></div>
+<div class="q"><label>네이버 예약 주소</label><input data-k="booking" value="${esc(S.booking)}" placeholder="https://booking.naver.com/..."><span class="help">홈페이지에는 예약 폼을 두지 않고 이 링크로만 연결합니다.</span></div>
+<div class="q"><label>카카오톡 채널 주소</label><input data-k="kakao" value="${esc(S.kakao)}" placeholder="https://pf.kakao.com/..."></div>`},
+
+{t:"진료과목",r:()=>`<h2>진료과목</h2><p class="lead">시설·장비·인력을 갖춘 과목만 골라 주세요. 타이핑이 번거로우면 아래에서 <b>사진으로 올려도</b> 됩니다.</p>
 <div class="q" data-req="depts"><span class="lb">진료과목<i></i></span><div class="chips">${DEPTS.map(d=>`<button class="chip${S.depts.includes(d)?" on":""}" data-toggle="depts" data-v="${d}">${d}</button>`).join("")}</div>
 <input data-k="deptCustom" value="${esc(S.deptCustom)}" placeholder="목록에 없으면 직접 입력 (쉼표 구분)" style="margin-top:10px"><div class="err">과목을 하나 이상 골라 주세요</div></div>
 ${S.depts.length?`<div class="q"><span class="lb">과목별 주요 진료 항목</span><span class="help" style="margin:0 0 10px">환자가 검색하는 증상·검사 이름만. 효과·결과 표현은 넣지 않습니다.</span>
 ${S.depts.map(d=>`<input data-field="${esc(d)}" value="${esc(S.fields[d]||"")}" placeholder="${esc(d)}: 예) 디스크, 협착증, 두통 (쉼표 구분)" style="margin-bottom:8px">`).join("")}</div>`:""}
-<div class="q"><label>한 줄 소개</label><input data-k="tagline" value="${esc(S.tagline)}" placeholder="예: 신경외과 전문의가 직접 진료하는 동네 의원"><span class="help">사실만. "최고·유일·완치" 같은 표현은 빌드에서 막힙니다.</span></div>`},
+<div class="q"><label>한 줄 소개</label><input data-k="tagline" value="${esc(S.tagline)}" placeholder="예: 신경외과 전문의가 직접 진료하는 동네 의원"><span class="help">사실만. "최고·유일·완치" 같은 표현은 빌드에서 막힙니다.</span></div>
+<div class="q"><span class="lb">사진으로 대신하기</span>${uploader("docs")}</div>`},
 
 {t:"진료시간",r:()=>`<h2>진료시간</h2><p class="lead">요일을 누르면 진료/휴진이 바뀝니다. 아래 빠른 설정을 먼저 눌러 보세요.</p>
 <div class="presets"><button class="chip" data-preset="a">평일 09–18 · 토 09–13</button><button class="chip" data-preset="b">평일 09–19 · 토 09–14</button><button class="chip" data-preset="c">토요일 휴진</button></div>
@@ -127,16 +147,18 @@ ${S.depts.map(d=>`<input data-field="${esc(d)}" value="${esc(S.fields[d]||"")}" 
 {t:"디자인",r:()=>`<h2>첫 화면 디자인</h2><p class="lead">내용은 귀 병원 정보로 바뀝니다. 나중에 바꿀 수 있어요. <a href="out/catalog/index.html" target="_blank" style="color:var(--c)">카탈로그 크게 보기 ↗</a></p>
 <div class="q"><div class="dcards">${Object.entries(DESIGN).map(([k,[a,b]])=>`<button class="dcard${S.design===k?" on":""}" data-set="design" data-v="${k}"><img src="assets/design_${k}.jpg" alt="${k}" loading="lazy"><div><b>${k} · ${a}</b><small>${b}</small></div></button>`).join("")}</div></div>
 <div class="q"><span class="lb">색</span><div class="chips">${Object.entries(COLOR).map(([k,[h,n]])=>`<button class="chip${S.color===k?" on":""}" data-set="color" data-v="${k}"><i class="sw" style="background:${h}"></i>${n}</button>`).join("")}<button class="chip${S.color===""?" on":""}" data-set="color" data-v="">추천에 맡김</button></div></div>
-<div class="q"><label>참고하고 싶은 병원 홈페이지</label><input data-k="refs" value="${esc(S.refs)}" placeholder="주소 1~2개 (선택)"></div>`},
+<div class="q"><span class="lb">원하는 분위기</span><div class="chips">${MOOD.map(m=>`<button class="chip${S.mood.includes(m)?" on":""}" data-toggle="mood" data-v="${m}">${m}</button>`).join("")}</div></div>
+<div class="q"><label>이런 느낌으로 · 이런 건 싫어요</label><textarea data-k="styleNote" placeholder="예) 글자 크게, 사진은 적게 / 파란색은 싫다 / 원장 사진은 안 넣고 싶다">${esc(S.styleNote)}</textarea></div>
+<div class="q"><label>참고하고 싶은 병원 홈페이지</label><input data-k="refs" value="${esc(S.refs)}" placeholder="주소 1~2개 (선택)">${uploader("refs")}</div>`},
 
 {t:"넣을 것 · 자료",r:()=>`<h2>넣을 섹션과 보낼 자료</h2><p class="lead">섹션은 기본 전부 켜져 있어요. 빼고 싶은 것만 끄세요.</p>
 <div class="q"><span class="lb">넣을 섹션</span><div class="chips">${Object.entries(SECTIONS).map(([k,v])=>{const fixed=k==="doctors"||k==="nonpaid";return`<button class="chip${S.sections.includes(k)?" on":""}" data-toggle="sections" data-v="${k}"${fixed?" disabled":""}>${v}</button>`}).join("")}</div><span class="help">후기 · 전후사진 · 이벤트 · 건강칼럼은 의료법 56조 위험으로 제작하지 않습니다.</span></div>
-<div class="q"><span class="lb">지금 보내줄 수 있는 자료</span><div class="chips">${Object.entries(HAVE).map(([k,v])=>`<button class="chip${S.have.includes(k)?" on":""}" data-toggle="have" data-v="${k}">${v}</button>`).join("")}</div><span class="help">파일은 크몽 채팅으로 따로 보내 주세요. 사진이 없으면 B2 디자인을 추천합니다.</span></div>`},
+<div class="q"><span class="lb">지금 보내줄 수 있는 자료</span><div class="chips">${Object.entries(HAVE).map(([k,v])=>`<button class="chip${S.have.includes(k)?" on":""}" data-toggle="have" data-v="${k}">${v}</button>`).join("")}</div><span class="help">사진이 없으면 B2 디자인을 추천합니다.</span></div>
+<div class="q"><span class="lb">지금 올리기 (선택)</span>${uploader("assets")}<span class="help">원본 화질이 필요한 로고·사진은 나중에 크몽 채팅으로 원본을 한 번 더 보내 주세요.</span></div>`},
 
-{t:"연락 · 기타",r:()=>`<h2>예약 링크와 기타 요청</h2><p class="lead">홈페이지에는 예약 폼을 두지 않고 아래 링크로만 연결합니다 (개인정보 미수집).</p>
-<div class="q"><label>네이버 예약 주소</label><input data-k="booking" value="${esc(S.booking)}" placeholder="https://booking.naver.com/..."></div>
-<div class="q"><label>카카오톡 채널 주소</label><input data-k="kakao" value="${esc(S.kakao)}" placeholder="https://pf.kakao.com/..."></div>
-<div class="q"><label>블로그 · SNS 주소</label><input data-k="blog" value="${esc(S.blog)}" placeholder="https://blog.naver.com/..."></div>
+{t:"작성자 · 기타",r:()=>`<h2>작성하신 분과 기타 요청</h2><p class="lead">샘플을 보여드릴 때 누구와 이야기하면 되는지 알려 주세요.</p>
+<div class="q"><label>작성자 성함</label><input data-k="author" value="${esc(S.author)}" placeholder="예: 김하늘"></div>
+<div class="q"><span class="lb">역할</span><div class="cards">${["원장","직원","가족","대행"].map(k=>`<button class="card${S.authorRole===k?" on":""}" data-set="authorRole" data-v="${k}"><b>${k}</b></button>`).join("")}</div></div>
 <div class="q"><label>희망 도메인</label><input data-k="domain" value="${esc(S.domain)}" placeholder="예: skyclinic.co.kr (없으면 후보 3개 제안)"></div>
 <div class="q"><label>꼭 들어가야 할 것 · 싫은 것</label><textarea data-k="notes" placeholder="자유롭게">${esc(S.notes)}</textarea></div>`}];
 
@@ -182,8 +204,18 @@ main.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.id
   else if(d.day){S.days[d.day].on=!S.days[d.day].on}else if(d.lunch){S.lunch.on=!S.lunch.on}
   else if(d.preset){const p=d.preset;DAYS.forEach(x=>{const w=S.days[x];if(p==="c"){if(x==="토")w.on=false;return}w.on=x!=="일";w.s="09:00";w.e=x==="토"?(p==="a"?"13:00":"14:00"):(p==="a"?"18:00":"19:00")})}
   else if(d.add){S.doctors.push({name:"",title:"",spec:"",degree:"",career:""})}else if(d.rm){S.doctors.splice(+d.rm,1)}
+  else if(d.pick){e.preventDefault();b.parentElement.querySelector("input[type=file]").click();return}
+  else if(d.rmup){const[k,i]=d.rmup.split(".");S.uploads[k].splice(+i,1)}
   else return;
   e.preventDefault();render()});
+// 사진: 긴 변 1600px · JPEG 0.8 로 줄여 data URL 로 보관 → JSON 에 함께 담김 (서버 없음)
+main.addEventListener("change",async e=>{const t=e.target;if(!t.dataset.upin)return;const k=t.dataset.upin;S.uploads[k]=S.uploads[k]||[];
+  for(const f of t.files){if(upCount()>=12){alert("사진은 최대 12장입니다.");break}
+    try{const data=await shrink(f);S.uploads[k].push({name:f.name,data})}catch{alert(f.name+" 은(는) 읽을 수 없는 파일입니다.")}}
+  render()});
+function shrink(file){return new Promise((ok,no)=>{const img=new Image();img.onload=()=>{const m=1600,r=Math.min(1,m/Math.max(img.width,img.height));
+  const c=document.createElement("canvas");c.width=Math.round(img.width*r);c.height=Math.round(img.height*r);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+  URL.revokeObjectURL(img.src);ok(c.toDataURL("image/jpeg",.8))};img.onerror=no;img.src=URL.createObjectURL(file)})}
 
 // ---------- 출력 (build.py 입력 스키마와 동일) ----------
 const lines=s=>s.split("\n").map(x=>x.trim()).filter(Boolean),list=s=>s.split(",").map(x=>x.trim()).filter(Boolean);
@@ -195,14 +227,18 @@ function hoursOut(){const g=[];const key=d=>S.days[d].on?`${S.days[d].s} – ${S
 function toJSON(){const depts=[...S.depts,...list(S.deptCustom)];
   const features=S.sections.includes("features")?[...S.feats.map(k=>({icon:FEAT[k][0],title:FEAT[k][1],desc:FEAT[k][2]})),...lines(S.featExtra).map(t=>({icon:"",title:t,desc:""}))]:[];
   const fields=S.sections.includes("fields")?depts.map(d=>({dept:d,items:list(S.fields[d]||"")})).filter(x=>x.items.length):[];
-  return{_기획:{design:S.design,color_name:S.color,sections:S.sections,have:S.have,refs:S.refs,notes:S.notes,received:new Date().toISOString().slice(0,10),form:"intake v2"},
+  const 첨부=Object.entries(S.uploads).flatMap(([k,a])=>a.map(f=>({kind:k,name:f.name,data:f.data})));
+  return{_기획:{design:S.design,color_name:S.color,mood:S.mood,style_note:S.styleNote,sections:S.sections,have:S.have,refs:S.refs,notes:S.notes,
+      existing_site:S.existing,site_url:S.site_url.trim(),place_url:S.place_url.trim(),author:S.author.trim(),author_role:S.authorRole,
+      received:new Date().toISOString().slice(0,10),form:"intake v2.1"},
+    _첨부:첨부,
     draft:true,slug:(S.domain.split(".")[0]||"").replace(/[^a-z0-9-]/gi,"").toLowerCase()||"clinic",
     name:S.name.trim(),kind:S.kind,tagline:S.tagline.trim(),phone:S.phone.trim(),address:S.address.trim(),transport:"",parking:S.feats.includes("park")?"주차 가능 (상세 확인 필요)":"",
     departments:depts,hero_style:HERO[S.design],color:COLOR[S.color]?.[0]||"",hours:hoursOut(),
     doctors:S.doctors.filter(d=>d.name.trim()).map(d=>({name:d.name.trim(),title:d.title.trim(),license:"의사 면허",specialty:d.spec.trim(),degree:d.degree.trim(),career:lines(d.career),photo:""})),
     features,fields,facilities:list(S.facilities),photos:[],hero_photo:"",logo:"",notices:[],nonpaid:[],
     booking_url:S.booking.trim(),kakao_url:S.kakao.trim(),blog_url:S.blog.trim(),founder:S.doctors[0]?.name.trim()||"",opened:S.opened.trim(),biz_no:"확인 필요",domain:S.domain.trim(),approved_by:"",approved_at:""}}
-const summary=d=>`${d.name||"(명칭 없음)"} · ${d.kind} · ${d.departments.join(", ")||"과목 없음"}\n디자인 ${S.design} · ${COLOR[S.color]?.[1]||"색 추천"} · 의료진 ${d.doctors.length}명 · 차별점 ${S.feats.length}개\n진료시간 ${d.hours.map(h=>h.join(" ")).join(" / ")}`;
+const summary=d=>`${d.name||"(명칭 없음)"} · ${d.kind} · ${d.departments.join(", ")||"과목 없음"}\n디자인 ${S.design} · ${COLOR[S.color]?.[1]||"색 추천"} · ${S.mood.join("·")||"분위기 미선택"} · 의료진 ${d.doctors.length}명 · 차별점 ${S.feats.length}개 · 사진 ${d._첨부.length}장\n진료시간 ${d.hours.map(h=>h.join(" ")).join(" / ")}\n작성 ${d._기획.author||"(성함 없음)"} (${d._기획.author_role})`;
 function download(d){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));a.download=(d.name||"병원")+"_사전정보.json";a.click()}
 render();
 </script>
