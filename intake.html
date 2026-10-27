@@ -25,6 +25,15 @@ input:focus,textarea:focus,select:focus{border-color:var(--c);box-shadow:0 0 0 3
 .dcard{padding:0;overflow:hidden;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;text-align:left;font:inherit}.dcard.on{border-color:var(--c);box-shadow:0 0 0 3px rgba(11,79,138,.15)}
 .dcard img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}.dcard div{padding:12px 14px}.dcard b{display:block;font-size:1rem}.dcard small{color:var(--sub);font-size:.85rem;line-height:1.4;display:block}
 .sw{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:8px;vertical-align:-1px;border:1px solid rgba(0,0,0,.12)}
+.ccards{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:560px){.ccards{grid-template-columns:1fr}}
+.ccard{padding:0;overflow:hidden;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;text-align:left;font:inherit;position:relative}.ccard.on{border-color:var(--c);box-shadow:0 0 0 3px rgba(11,79,138,.15)}
+.ccard.on:after{content:"선택";position:absolute;top:10px;right:10px;background:var(--c);color:#fff;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:999px}
+.ccard-b{padding:10px 14px 12px}.ccard-b b{display:block;font-size:1rem}.ccard-b small{color:var(--sub);font-size:.82rem;line-height:1.4;display:block}
+.ct{aspect-ratio:16/10;padding:12px 14px;display:grid;grid-template-rows:auto 1fr auto;gap:6px;letter-spacing:-.02em}
+.ct-top{display:flex;gap:6px;align-items:center}.ct-top i{width:10px;height:10px;border-radius:3px}.ct-top span{height:4px;width:18px;border-radius:2px;background:currentColor;opacity:.35}.ct-top span:first-of-type{margin-left:auto}
+.ct-mid{display:grid;grid-template-columns:1fr auto;align-items:end;gap:8px}.ct-mid b{font-size:1.5rem;line-height:1.1}.ct-blk{display:grid;gap:5px}.ct-blk i{display:block;width:64px;height:16px;border-radius:4px;background:currentColor;opacity:.25}.ct-blk i:first-child{opacity:1;height:22px}
+.ct.round .ct-blk i,.ct.round .ct-top i{border-radius:999px}.ct.line .ct-blk i{background:transparent;border:1.5px solid currentColor;opacity:.8}.ct.line .ct-blk i:first-child{background:currentColor;border:0}
+.ct-pal{display:flex;gap:4px;align-items:center}.ct-pal i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}.ct-pal em{font-style:normal;font-size:.72rem;opacity:.85;margin-left:6px;font-family:Pretendard,sans-serif;font-weight:500}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:560px){.row2{grid-template-columns:1fr}}
 .days{display:grid;gap:8px}.day{display:grid;grid-template-columns:64px 1fr auto 1fr;gap:8px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px}
 .day.off{opacity:.55}.day select{padding:9px 10px}.day .tg{font:inherit;font-weight:700;padding:9px 0;border:0;border-radius:8px;background:var(--tint);color:var(--c);cursor:pointer}.day.off .tg{background:#eee;color:var(--sub)}
@@ -76,17 +85,31 @@ const FEAT={ // 키: [아이콘, 카드 제목, 설명] — 사실 서술만
  years:["내과","개원 10년 이상","같은 자리에서 오래 진료해 왔습니다."],
  access:["재활","1층 · 엘리베이터 · 장애인 편의","휠체어·유모차 출입이 편합니다."]};
 const FEAT_LABEL={specialist:"전문의 원장 직접 진료",phd:"의학박사",ct:"CT 원내 촬영",mri:"MRI 원내 촬영",xray:"X-ray · 초음파",bone:"골밀도 검사",endo:"위·대장 내시경",physio:"물리치료 · 도수치료",auto:"자동차보험 진료기관",checkup:"국가건강검진 지정",baby:"영유아 검진 · 예방접종",night:"야간 진료",sat:"토 · 공휴일 진료",lunch:"점심시간 없이 진료",park:"주차 가능",station:"역 · 정류장 도보 3분",years:"개원 10년 이상",access:"1층 · 엘리베이터 · 장애인 편의"};
-const DESIGN={B1:["사진 + 예약 패널","기본. 외관·원장 사진이 있을 때"],B2:["사실 칩 + 예약 패널","사진이 없거나 약할 때. 강점이 글자로 보임"],A1:["풀화면 사진 + 큰 제목","사진이 좋을 때. 대학병원 느낌"],E1:["어두운 톤 + 과목 타이포","치과·한의원 브랜딩"]};
-const HERO={B1:"photo",B2:"fact",A1:"full",E1:"brand"};
+// 디자인 컨셉 = 분위기 제안. 실제 화면은 병원 정보·자료·아래 스타일 답에 맞춰 새로 짠다 (같은 틀 복제 아님)
+const CONCEPT={
+ classic:{n:"클래식 신뢰",m:"대학병원처럼 반듯하고 믿음직",f:"의원 전반 · 신경외과 · 정형외과 · 내과",c:["#0b4f8a","#ffffff","#e9eef5"],font:"Pretendard",w:800,bg:"linear-gradient(135deg,#0b4f8a,#083a66)",fg:"#fff",hero:"photo"},
+ warm:{n:"따뜻한 동네",m:"크림색 · 둥근 글꼴 · 손그림 아이콘",f:"소아청소년과 · 가정의학과 · 내과",c:["#f6efe4","#d9775c","#7a8c5a"],font:"Pretendard",w:700,bg:"#f6efe4",fg:"#4a3a2a",hero:"fact",round:1},
+ minimal:{n:"미니멀 화이트",m:"흰 바탕 · 검정 글자 · 포인트 1색 · 여백 넓게",f:"피부과 · 안과 · 치과 · 검진센터",c:["#ffffff","#111111","#2fb5a0"],font:"Pretendard",w:600,bg:"#fff",fg:"#111",hero:"fact",line:1},
+ editorial:{n:"에디토리얼",m:"명조 제목 · 잡지 같은 큰 타이포",f:"한의원 · 여성의원 · 고급 클리닉",c:["#f3efe7","#1d1d1b","#8b6a3f"],font:"'Nanum Myeongjo','Apple Myungjo',Georgia,serif",w:700,bg:"#f3efe7",fg:"#1d1d1b",hero:"full"},
+ dark:{n:"다크 프리미엄",m:"차콜 바탕 · 금속빛 포인트 · 과목 큰 글자",f:"치과 · 피부과 · 성형외과",c:["#14191f","#c9a96a","#2fd1b2"],font:"Pretendard",w:800,bg:"linear-gradient(135deg,#14191f,#1f2a36)",fg:"#fff",hero:"brand"},
+ natural:{n:"내추럴 그린",m:"세이지 그린 · 우드 톤 · 자연 사진",f:"한의원 · 재활의학과 · 요양·통증",c:["#e8ede6","#5f7a5a","#b08968"],font:"Pretendard",w:700,bg:"#e8ede6",fg:"#2f3d2c",hero:"photo"},
+ vivid:{n:"비비드 프렌들리",m:"밝은 색면 블록 · 큰 아이콘 · 또렷한 버튼",f:"소아과 · 이비인후과 · 가족 단위 병원",c:["#2563eb","#fbbf24","#fb7185"],font:"Pretendard",w:800,bg:"#2563eb",fg:"#fff",hero:"fact",round:1},
+ photo:{n:"포토 임팩트",m:"원장·시설 사진을 화면 가득 · 흰 큰 제목",f:"사진 자산이 좋은 병원 · 신축 개원",c:["#1a2430","#ffffff","#9fb0c2"],font:"Pretendard",w:800,bg:"linear-gradient(0deg,#1a2430 20%,#6b8aa6)",fg:"#fff",hero:"full"}};
+const tile=(k,c)=>`<div class="ct${c.round?" round":""}${c.line?" line":""}" style="background:${c.bg};color:${c.fg};font-family:${c.font};font-weight:${c.w}">
+<div class="ct-top"><i style="background:${c.c[2]}"></i><span></span><span></span><span></span></div>
+<div class="ct-mid"><b>${c.n.split(" ")[0]}<br>의원</b><div class="ct-blk"><i style="background:${c.c[2]}"></i><i></i></div></div>
+<div class="ct-pal">${c.c.map(x=>`<i style="background:${x}"></i>`).join("")}<em>${esc(c.m)}</em></div></div>`;
+const FONT={round:"둥글고 부드럽게",sharp:"반듯하고 또렷하게",serif:"명조 · 고전적으로"},PHOTO={many:"사진 많이",few:"사진 조금",none:"사진 없이 글·색으로"},DENSE={airy:"여백 넓게",tight:"정보 촘촘히"};
 const COLOR={navy:["#0b4f8a","네이비 (의원 기본)"],teal:["#1a8a7a","틸 (치과)"],brown:["#7a5a2a","브라운 (한의원)"],green:["#2f7d4f","그린"],wine:["#7b2d3b","와인"]};
 const SECTIONS={features:"진료 환경 (차별점 카드)",fields:"진료 분야 (과목별 항목)",doctors:"의료진 (필수)",photos:"시설 사진",notices:"공지 (휴진·시간 변경)",nonpaid:"비급여 고지 (필수)"};
 const HAVE={photo_director:"원장 사진 (진료실)",photo_place:"외관 · 내부 사진",logo:"로고 파일",career:"원장 약력 문서",license:"전문의 자격증 · 학위증 사본",nonpaid:"비급여 진료비 표",biz:"사업자등록번호"};
 
 const blank=()=>({name:"",kind:"의원",phone:"",address:"",opened:"",depts:[],deptCustom:"",tagline:"",fields:{},
   days:Object.fromEntries(DAYS.map(d=>[d,{on:d!=="일",s:"09:00",e:d==="토"?"13:00":"18:00"}])),lunch:{on:true,s:"13:00",e:"14:00"},
-  doctors:[{name:"",title:"원장",spec:"",degree:"",career:""}],feats:[],featExtra:"",facilities:"",design:"B1",color:"navy",refs:"",
+  doctors:[{name:"",title:"원장",spec:"",degree:"",career:""}],feats:[],featExtra:"",facilities:"",color:"",refs:"",
   sections:["features","fields","doctors","photos","notices","nonpaid"],have:[],booking:"",kakao:"",blog:"",domain:"",notes:"",
-  existing:"없음",site_url:"",place_url:"",mood:[],styleNote:"",author:"",authorRole:"원장",uploads:{}});
+  existing:"없음",site_url:"",place_url:"",mood:[],styleNote:"",author:"",authorRole:"원장",uploads:{},
+  concepts:["classic"],font:"",photoAmt:"",density:""});
 let S;try{S=Object.assign(blank(),JSON.parse(localStorage.getItem("intake_v2")||"{}"))}catch{S=blank()}
 S.uploads={}; // 사진은 용량 때문에 기기 저장 안 함 (새로고침하면 다시 올림)
 let step=+(localStorage.getItem("intake_v2_step")||0);
@@ -144,12 +167,18 @@ ${S.depts.map(d=>`<input data-field="${esc(d)}" value="${esc(S.fields[d]||"")}" 
 <div class="q"><label>그 밖의 사실</label><textarea data-k="featExtra" placeholder="한 줄에 하나. 예) 입원실 4병상 / 영어 진료 가능">${esc(S.featExtra)}</textarea></div>
 <div class="q"><label>장비 · 시설 목록</label><input data-k="facilities" value="${esc(S.facilities)}" placeholder="CT실, X-ray실, 초음파실, 물리치료실 (쉼표 구분)"></div>`},
 
-{t:"디자인",r:()=>`<h2>첫 화면 디자인</h2><p class="lead">내용은 귀 병원 정보로 바뀝니다. 나중에 바꿀 수 있어요. <a href="out/catalog/index.html" target="_blank" style="color:var(--c)">카탈로그 크게 보기 ↗</a></p>
-<div class="q"><div class="dcards">${Object.entries(DESIGN).map(([k,[a,b]])=>`<button class="dcard${S.design===k?" on":""}" data-set="design" data-v="${k}"><img src="assets/design_${k}.jpg" alt="${k}" loading="lazy"><div><b>${k} · ${a}</b><small>${b}</small></div></button>`).join("")}</div></div>
-<div class="q"><span class="lb">색</span><div class="chips">${Object.entries(COLOR).map(([k,[h,n]])=>`<button class="chip${S.color===k?" on":""}" data-set="color" data-v="${k}"><i class="sw" style="background:${h}"></i>${n}</button>`).join("")}<button class="chip${S.color===""?" on":""}" data-set="color" data-v="">추천에 맡김</button></div></div>
-<div class="q"><span class="lb">원하는 분위기</span><div class="chips">${MOOD.map(m=>`<button class="chip${S.mood.includes(m)?" on":""}" data-toggle="mood" data-v="${m}">${m}</button>`).join("")}</div></div>
-<div class="q"><label>이런 느낌으로 · 이런 건 싫어요</label><textarea data-k="styleNote" placeholder="예) 글자 크게, 사진은 적게 / 파란색은 싫다 / 원장 사진은 안 넣고 싶다">${esc(S.styleNote)}</textarea></div>
-<div class="q"><label>참고하고 싶은 병원 홈페이지</label><input data-k="refs" value="${esc(S.refs)}" placeholder="주소 1~2개 (선택)">${uploader("refs")}</div>`},
+{t:"디자인 컨셉",r:()=>`<h2>끌리는 분위기를 골라 주세요</h2><p class="lead">아래는 <b>분위기 제안</b>입니다. 이 그림이 그대로 나오는 게 아니라, 고른 분위기 + 다음 장의 취향 + 귀 병원 자료로 <b>새로 디자인</b>합니다. 1~2개.</p>
+<div class="q"><div class="ccards">${Object.entries(CONCEPT).map(([k,c])=>`<button class="ccard${S.concepts.includes(k)?" on":""}" data-concept="${k}">${tile(k,c)}<div class="ccard-b"><b>${c.n}</b><small>${c.f}</small></div></button>`).join("")}</div>
+<span class="help">첫 번째로 고른 것이 주 컨셉, 두 번째는 섞을 요소입니다. 구조 예시는 <a href="out/catalog/index.html" target="_blank" style="color:var(--c)">샘플 카탈로그</a>에서 볼 수 있어요.</span></div>
+<div class="q"><span class="lb">주 색상</span><div class="chips">${Object.entries(COLOR).map(([k,[h,n]])=>`<button class="chip${S.color===k?" on":""}" data-set="color" data-v="${k}"><i class="sw" style="background:${h}"></i>${n}</button>`).join("")}<button class="chip${S.color===""?" on":""}" data-set="color" data-v="">컨셉에 맞춰 추천</button></div></div>`},
+
+{t:"원하는 스타일",r:()=>`<h2>원하시는 스타일</h2><p class="lead">작성하시는 분의 취향을 그대로 적어 주세요. 여기서 색다른 결과물이 나옵니다.</p>
+<div class="q"><span class="lb">분위기 단어</span><div class="chips">${MOOD.map(m=>`<button class="chip${S.mood.includes(m)?" on":""}" data-toggle="mood" data-v="${m}">${m}</button>`).join("")}</div></div>
+<div class="q"><span class="lb">글꼴 느낌</span><div class="cards">${Object.entries(FONT).map(([k,v])=>`<button class="card${S.font===k?" on":""}" data-set="font" data-v="${k}"><b style="font-family:${k==="serif"?"'Nanum Myeongjo','Apple Myungjo',Georgia,serif":"inherit"};font-weight:${k==="round"?500:800}">가나다 Aa</b><small>${v}</small></button>`).join("")}</div></div>
+<div class="row2"><div class="q"><span class="lb">사진 비중</span><div class="cards">${Object.entries(PHOTO).map(([k,v])=>`<button class="card${S.photoAmt===k?" on":""}" data-set="photoAmt" data-v="${k}"><b>${v}</b></button>`).join("")}</div></div>
+<div class="q"><span class="lb">화면 밀도</span><div class="cards">${Object.entries(DENSE).map(([k,v])=>`<button class="card${S.density===k?" on":""}" data-set="density" data-v="${k}"><b>${v}</b></button>`).join("")}</div></div></div>
+<div class="q"><label>이런 느낌으로 · 이런 건 싫어요</label><textarea data-k="styleNote" placeholder="예) 어르신 환자가 많아 글자 크게 / 파란색은 싫다 / 원장 사진은 안 넣고 싶다 / ○○병원 같은 느낌">${esc(S.styleNote)}</textarea></div>
+<div class="q"><label>참고하고 싶은 홈페이지 · 캡처</label><input data-k="refs" value="${esc(S.refs)}" placeholder="주소 1~2개 (병원이 아니어도 됩니다)">${uploader("refs")}</div>`},
 
 {t:"넣을 것 · 자료",r:()=>`<h2>넣을 섹션과 보낼 자료</h2><p class="lead">섹션은 기본 전부 켜져 있어요. 빼고 싶은 것만 끄세요.</p>
 <div class="q"><span class="lb">넣을 섹션</span><div class="chips">${Object.entries(SECTIONS).map(([k,v])=>{const fixed=k==="doctors"||k==="nonpaid";return`<button class="chip${S.sections.includes(k)?" on":""}" data-toggle="sections" data-v="${k}"${fixed?" disabled":""}>${v}</button>`}).join("")}</div><span class="help">후기 · 전후사진 · 이벤트 · 건강칼럼은 의료법 56조 위험으로 제작하지 않습니다.</span></div>
@@ -204,6 +233,7 @@ main.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.id
   else if(d.day){S.days[d.day].on=!S.days[d.day].on}else if(d.lunch){S.lunch.on=!S.lunch.on}
   else if(d.preset){const p=d.preset;DAYS.forEach(x=>{const w=S.days[x];if(p==="c"){if(x==="토")w.on=false;return}w.on=x!=="일";w.s="09:00";w.e=x==="토"?(p==="a"?"13:00":"14:00"):(p==="a"?"18:00":"19:00")})}
   else if(d.add){S.doctors.push({name:"",title:"",spec:"",degree:"",career:""})}else if(d.rm){S.doctors.splice(+d.rm,1)}
+  else if(d.concept){const a=S.concepts,i=a.indexOf(d.concept);if(i>=0){if(a.length>1)a.splice(i,1)}else{a.push(d.concept);if(a.length>2)a.shift()}}
   else if(d.pick){e.preventDefault();b.parentElement.querySelector("input[type=file]").click();return}
   else if(d.rmup){const[k,i]=d.rmup.split(".");S.uploads[k].splice(+i,1)}
   else return;
@@ -228,17 +258,18 @@ function toJSON(){const depts=[...S.depts,...list(S.deptCustom)];
   const features=S.sections.includes("features")?[...S.feats.map(k=>({icon:FEAT[k][0],title:FEAT[k][1],desc:FEAT[k][2]})),...lines(S.featExtra).map(t=>({icon:"",title:t,desc:""}))]:[];
   const fields=S.sections.includes("fields")?depts.map(d=>({dept:d,items:list(S.fields[d]||"")})).filter(x=>x.items.length):[];
   const 첨부=Object.entries(S.uploads).flatMap(([k,a])=>a.map(f=>({kind:k,name:f.name,data:f.data})));
-  return{_기획:{design:S.design,color_name:S.color,mood:S.mood,style_note:S.styleNote,sections:S.sections,have:S.have,refs:S.refs,notes:S.notes,
+  const main_c=CONCEPT[S.concepts[0]]||CONCEPT.classic;
+  return{_기획:{concepts:S.concepts.map(k=>({key:k,name:CONCEPT[k].n})),color_name:S.color,mood:S.mood,font:S.font,photo_amount:S.photoAmt,density:S.density,style_note:S.styleNote,sections:S.sections,have:S.have,refs:S.refs,notes:S.notes,
       existing_site:S.existing,site_url:S.site_url.trim(),place_url:S.place_url.trim(),author:S.author.trim(),author_role:S.authorRole,
       received:new Date().toISOString().slice(0,10),form:"intake v2.1"},
     _첨부:첨부,
     draft:true,slug:(S.domain.split(".")[0]||"").replace(/[^a-z0-9-]/gi,"").toLowerCase()||"clinic",
     name:S.name.trim(),kind:S.kind,tagline:S.tagline.trim(),phone:S.phone.trim(),address:S.address.trim(),transport:"",parking:S.feats.includes("park")?"주차 가능 (상세 확인 필요)":"",
-    departments:depts,hero_style:HERO[S.design],color:COLOR[S.color]?.[0]||"",hours:hoursOut(),
+    departments:depts,hero_style:S.photoAmt==="none"&&main_c.hero==="photo"?"fact":main_c.hero,color:COLOR[S.color]?.[0]||main_c.c[0],hours:hoursOut(),
     doctors:S.doctors.filter(d=>d.name.trim()).map(d=>({name:d.name.trim(),title:d.title.trim(),license:"의사 면허",specialty:d.spec.trim(),degree:d.degree.trim(),career:lines(d.career),photo:""})),
     features,fields,facilities:list(S.facilities),photos:[],hero_photo:"",logo:"",notices:[],nonpaid:[],
     booking_url:S.booking.trim(),kakao_url:S.kakao.trim(),blog_url:S.blog.trim(),founder:S.doctors[0]?.name.trim()||"",opened:S.opened.trim(),biz_no:"확인 필요",domain:S.domain.trim(),approved_by:"",approved_at:""}}
-const summary=d=>`${d.name||"(명칭 없음)"} · ${d.kind} · ${d.departments.join(", ")||"과목 없음"}\n디자인 ${S.design} · ${COLOR[S.color]?.[1]||"색 추천"} · ${S.mood.join("·")||"분위기 미선택"} · 의료진 ${d.doctors.length}명 · 차별점 ${S.feats.length}개 · 사진 ${d._첨부.length}장\n진료시간 ${d.hours.map(h=>h.join(" ")).join(" / ")}\n작성 ${d._기획.author||"(성함 없음)"} (${d._기획.author_role})`;
+const summary=d=>`${d.name||"(명칭 없음)"} · ${d.kind} · ${d.departments.join(", ")||"과목 없음"}\n컨셉 ${S.concepts.map(k=>CONCEPT[k].n).join(" + ")} · ${COLOR[S.color]?.[1]||"색 추천"} · ${[...S.mood,FONT[S.font],PHOTO[S.photoAmt],DENSE[S.density]].filter(Boolean).join("·")||"취향 미입력"}\n의료진 ${d.doctors.length}명 · 차별점 ${S.feats.length}개 · 사진 ${d._첨부.length}장 · 진료시간 ${d.hours.map(h=>h.join(" ")).join(" / ")}\n작성 ${d._기획.author||"(성함 없음)"} (${d._기획.author_role})`;
 function download(d){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));a.download=(d.name||"병원")+"_사전정보.json";a.click()}
 render();
 </script>
