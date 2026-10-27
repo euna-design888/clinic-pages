@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>병·의원 홈페이지 사전 정보 (10분)</title>
+<style>
+:root{color-scheme:light}body{font-family:"Malgun Gothic",sans-serif;max-width:760px;margin:0 auto;padding:24px 16px;color:#1d2b3a;background:#fff;line-height:1.55}
+h1{font-size:1.4rem;margin-bottom:4px}.lead{color:#5b6b7b;margin-top:0}
+h2{font-size:1.05rem;margin:32px 0 8px;border-bottom:2px solid #0b4f8a;padding-bottom:4px}h2 small{color:#5b6b7b;font-weight:400;font-size:.85rem}
+label{display:block;margin:12px 0 4px;font-weight:600}small{color:#5b6b7b;font-weight:400}
+input,textarea,select{width:100%;padding:8px;border:1px solid #c9d2db;border-radius:6px;font:inherit}textarea{min-height:64px}
+.box{background:#eef5fb;border:1px solid #b9d3ea;padding:12px;border-radius:8px;font-size:.92rem}
+.warn{background:#fff6e5;border-color:#f0c36d}
+.chk label,.rad label{display:flex;gap:8px;align-items:flex-start;font-weight:400;margin:6px 0;padding:8px 10px;border:1px solid #e4e9ef;border-radius:8px;cursor:pointer}
+.chk label:has(:checked),.rad label:has(:checked){border-color:#0b4f8a;background:#f3f8fd}
+.chk input,.rad input{width:auto;margin-top:4px;flex:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.sw{display:inline-block;width:18px;height:18px;border-radius:50%;vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,.15)}
+.design{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:600px){.design{grid-template-columns:1fr}}
+.design label{display:block;padding:12px}.design b{display:block;color:#0b4f8a}.design span{font-size:.88rem;color:#5b6b7b}
+.design .prev{height:72px;border-radius:6px;margin:8px 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;font-weight:700}
+button{margin-top:28px;padding:14px 22px;background:#0b4f8a;color:#fff;border:0;border-radius:8px;font:inherit;font-weight:700;cursor:pointer;width:100%}
+a{color:#0b4f8a}
+</style></head><body>
+<h1>병·의원 홈페이지 사전 정보</h1>
+<p class="lead">약 10분. 이 답으로 <b>샘플 홈페이지 1안을 바로 만들어</b> 보여드립니다. 모르는 칸은 비워 두세요(제작사가 공개 등록정보로 채우고 "확인 필요"로 표시합니다).</p>
+<div class="box">홈페이지에는 의료법 제57조 제3항 심의 제외 항목(명칭·주소·전화·진료과목·의료진·진료시간·시설·비급여 고지)만 싣습니다. 후기·전후사진·이벤트·할인·"최고/유일/완치" 표현은 넣지 않습니다.
+이 폼은 서버로 전송되지 않습니다. 마지막 "파일 만들기"를 누르면 JSON 파일이 내려받아지니 크몽 채팅으로 보내주세요.</div>
+
+<form id="f">
+<h2>1. 기본 정보 <small>필수 3개: 명칭·전화·주소</small></h2>
+<label>의료기관 명칭 <small>등록된 정식 명칭</small><input name="name" required placeholder="예: 하늘정원내과의원"></label>
+<div class="grid">
+<label>종별<select name="kind"><option>의원</option><option>치과의원</option><option>한의원</option><option>병원</option></select></label>
+<label>개원 시기 <small>예: 2006년</small><input name="opened" placeholder="2006년 3월"></label>
+<label>대표 전화<input name="phone" required placeholder="02-000-0000"></label>
+<label>개설자(원장) 성명<input name="founder"></label>
+</div>
+<label>주소 <small>층·호까지</small><input name="address" required></label>
+<label>한 줄 소개 <small>사실만. 예: "신경외과 전문의가 직접 진료하는 동네 의원". 효과·비교 표현은 빌드에서 막힙니다</small><input name="tagline"></label>
+<div class="grid">
+<label>교통 <small>지하철·버스·정류장</small><input name="transport"></label>
+<label>주차<input name="parking" placeholder="건물 지하 1시간 무료"></label>
+<label>네이버 예약 주소<input name="booking_url" placeholder="https://booking.naver.com/..."></label>
+<label>카카오톡 채널 주소<input name="kakao_url" placeholder="https://pf.kakao.com/..."></label>
+<label>블로그·SNS 주소<input name="blog_url" placeholder="https://blog.naver.com/..."></label>
+<label>희망 도메인 <small>없으면 후보 3개 제안</small><input name="domain" placeholder="skyclinic.co.kr"></label>
+</div>
+
+<h2>2. 진료과목·진료 분야</h2>
+<label>진료과목 <small>쉼표 구분. 시설·장비·인력을 갖춘 과목만</small><input name="departments" required placeholder="신경외과, 정형외과, 영상의학과"></label>
+<label>진료 분야 <small>환자가 검색하는 "증상·진료 이름"만. 한 줄에 과목 하나: "과목 | 항목, 항목" (효과·결과 표현 X)</small>
+<textarea name="fields" placeholder="신경외과 | 목·허리 디스크, 척추관 협착증, 두통·어지럼, 손발 저림
+정형외과 | 무릎·어깨 통증, 골절·염좌, 골다공증 검사, 물리치료"></textarea></label>
+
+<h2>3. 진료시간</h2>
+<label>한 줄에 하나, "요일 = 시간" <small>점심·휴진 포함</small><textarea name="hours" required placeholder="월·화·수·금 = 09:00 – 18:00
+목요일 = 09:00 – 12:30
+토요일 = 09:00 – 13:00
+점심시간 = 12:30 – 14:00
+일요일·공휴일 = 휴진"></textarea></label>
+
+<h2>4. 의료진</h2>
+<label>한 줄에 한 명: "성명 | 직함 | 전문의 자격 | 학위 | 약력(세미콜론 구분)" <small>전문의·박사 표시는 나중에 사본 확인 후 게시</small>
+<textarea name="doctors" required placeholder="박창현 | 원장 | 신경외과 전문의 | 의학박사 | ○○대 의대 졸업; ○○병원 신경외과 수료"></textarea></label>
+
+<h2>5. 우리 병원의 다른 점 <small>해당하는 것 전부 체크 → 첫 화면·"진료 환경" 카드가 됩니다</small></h2>
+<div class="box warn" style="margin-bottom:8px">사실만 체크해 주세요. 심평원 등록·자격증·지정서와 다르면 게시하지 않습니다. 가장 중요한 4개가 첫 화면에 들어갑니다.</div>
+<div class="chk grid" id="feat">
+<label><input type="checkbox" value="specialist">전문의 원장이 직접 진료</label>
+<label><input type="checkbox" value="phd">의학박사 (학위증 사본 제출 가능)</label>
+<label><input type="checkbox" value="ct">CT 원내 촬영</label>
+<label><input type="checkbox" value="mri">MRI 원내 촬영</label>
+<label><input type="checkbox" value="xray">X-ray · 초음파 원내 검사</label>
+<label><input type="checkbox" value="bone">골밀도 검사</label>
+<label><input type="checkbox" value="endo">내시경 (위·대장)</label>
+<label><input type="checkbox" value="physio">물리치료실 · 도수치료</label>
+<label><input type="checkbox" value="auto">자동차보험 진료기관</label>
+<label><input type="checkbox" value="checkup">국가건강검진 지정기관</label>
+<label><input type="checkbox" value="baby">영유아 검진 · 예방접종</label>
+<label><input type="checkbox" value="night">야간 진료 (평일 18시 이후)</label>
+<label><input type="checkbox" value="sat">토요일 · 공휴일 진료</label>
+<label><input type="checkbox" value="lunch">점심시간 없이 진료</label>
+<label><input type="checkbox" value="park">주차 가능</label>
+<label><input type="checkbox" value="station">역·정류장 도보 3분 이내</label>
+<label><input type="checkbox" value="years">개원 10년 이상</label>
+<label><input type="checkbox" value="access">1층 · 엘리베이터 · 장애인 편의</label>
+</div>
+<label>그 밖의 사실 <small>한 줄에 하나. 예: "입원실 4병상", "영어 진료 가능"</small><textarea name="feat_extra"></textarea></label>
+<label>보유 장비·시설 목록 <small>쉼표 구분</small><input name="facilities" placeholder="CT실, X-ray실, 초음파실, 물리치료실, 주사실"></label>
+
+<h2>6. 디자인 선택 <small><a href="out/catalog/index.html" target="_blank">카탈로그에서 실제 화면 보기 ↗</a></small></h2>
+<label>첫 화면 유형</label>
+<div class="rad design">
+<label><input type="radio" name="design" value="B1" checked><b>B1 사진 + 예약 패널 (기본)</b><div class="prev" style="background:linear-gradient(90deg,#1d3a5c,#4a7aa8)">사진 배경 · 흰 패널(전화·시간)</div><span>외관·원장 사진이 있을 때. 전화·시간·길이 첫 화면에서 끝남</span></label>
+<label><input type="radio" name="design" value="B2"><b>B2 사실 칩 + 예약 패널</b><div class="prev" style="background:linear-gradient(160deg,#083a66,#0b4f8a)">네이비 · 전문의·장비 칩 4</div><span>사진이 없거나 약할 때. 강점이 글자로 바로 보임</span></label>
+<label><input type="radio" name="design" value="A1"><b>A1 풀화면 사진 + 큰 제목</b><div class="prev" style="background:linear-gradient(0deg,#111 20%,#6b8aa6)">사진 100% · 흰 큰 글자</div><span>사진이 좋을 때. 대학병원 느낌</span></label>
+<label><input type="radio" name="design" value="E1"><b>E1 어두운 톤 + 과목 타이포</b><div class="prev" style="background:#14191f;color:#2fd1b2">BRAND · 과목 큰 글자</div><span>치과·한의원 브랜딩. 실적 숫자는 넣지 않음</span></label>
+</div>
+<label>색</label>
+<div class="rad grid">
+<label><input type="radio" name="color" value="navy" checked><i class="sw" style="background:#0b4f8a"></i>네이비 (의원 기본)</label>
+<label><input type="radio" name="color" value="teal"><i class="sw" style="background:#1a8a7a"></i>틸 (치과)</label>
+<label><input type="radio" name="color" value="brown"><i class="sw" style="background:#7a5a2a"></i>브라운 (한의원)</label>
+<label><input type="radio" name="color" value="green"><i class="sw" style="background:#2f7d4f"></i>그린</label>
+<label><input type="radio" name="color" value="wine"><i class="sw" style="background:#7b2d3b"></i>와인</label>
+<label><input type="radio" name="color" value="">제작사 추천에 맡김</label>
+</div>
+<label>참고하고 싶은 병원 홈페이지 <small>주소 1~2개 (선택)</small><input name="refs"></label>
+
+<h2>7. 넣을 섹션 <small>기본 전부 ON. 빼고 싶은 것만 끄세요</small></h2>
+<div class="chk grid" id="sec">
+<label><input type="checkbox" value="features" checked>진료 환경 (5번 차별점 카드)</label>
+<label><input type="checkbox" value="fields" checked>진료 분야 (과목별 항목)</label>
+<label><input type="checkbox" value="doctors" checked disabled>의료진 (필수)</label>
+<label><input type="checkbox" value="photos" checked>시설 사진</label>
+<label><input type="checkbox" value="notices" checked>공지 (휴진·시간 변경)</label>
+<label><input type="checkbox" value="nonpaid" checked disabled>비급여 고지 (의료법 45조, 필수)</label>
+</div>
+<small>후기 · 전후사진 · 이벤트 · 건강칼럼은 의료법 56조 위험으로 제작하지 않습니다.</small>
+
+<h2>8. 지금 보내줄 수 있는 자료 <small>있는 것만 체크. 파일은 채팅으로</small></h2>
+<div class="chk grid" id="have">
+<label><input type="checkbox" value="photo_director">원장 사진 (진료실)</label>
+<label><input type="checkbox" value="photo_place">외관 · 내부 사진 (환자 없음)</label>
+<label><input type="checkbox" value="logo">로고 파일</label>
+<label><input type="checkbox" value="career">원장 약력 문서</label>
+<label><input type="checkbox" value="license">전문의 자격증 · 학위증 사본</label>
+<label><input type="checkbox" value="nonpaid">비급여 진료비 표 (게시 중인 것)</label>
+<label><input type="checkbox" value="biz">사업자등록번호</label>
+</div>
+<small>사진이 없으면 B2(사실 칩) 안을 추천합니다. 사진이 오면 B1/A1으로 바꿀 수 있습니다.</small>
+
+<h2>9. 기타</h2>
+<label>꼭 들어가야 할 것 · 싫은 것 <small>자유롭게</small><textarea name="notes"></textarea></label>
+<button type="submit">파일 만들기 (JSON 내려받기)</button>
+</form>
+
+<script>
+const FEAT={ // 체크 → 사실 카드. 효과·비교 표현 없음
+ specialist:["소아","전문의 원장 직접 진료","전문의 원장이 처음부터 끝까지 직접 진료합니다."],
+ phd:["신경","의학박사","학위증 사본 확인 후 게시합니다."],
+ ct:["검진","CT 원내 촬영","CT 보유. 다른 병원에 가지 않고 원내에서 촬영합니다."],
+ mri:["영상","MRI 원내 촬영","MRI 보유. 원내에서 촬영합니다."],
+ xray:["정형","X-ray · 초음파 원내 검사","당일 원내 검사가 가능합니다."],
+ bone:["정형","골밀도 검사","골밀도검사기 보유."],
+ endo:["내과","위·대장 내시경","원내 내시경실에서 검사합니다."],
+ physio:["재활","물리치료실 · 도수치료","물리치료사 상주."],
+ auto:["재활","자동차보험 진료기관","교통사고 자동차보험 진료가 가능한 의료기관입니다."],
+ checkup:["검진","국가건강검진 지정기관","국민건강보험 일반검진 지정 의료기관입니다."],
+ baby:["소아","영유아 검진 · 예방접종","영유아 건강검진 및 국가예방접종 지정 의료기관입니다."],
+ night:["검진","야간 진료","평일 저녁 진료 시간을 운영합니다. 요일별 시간은 진료시간표 참조."],
+ sat:["검진","토요일 · 공휴일 진료","주말에도 진료합니다. 시간은 진료시간표 참조."],
+ lunch:["검진","점심시간 없이 진료","점심시간에도 접수·진료합니다."],
+ park:["정형","주차 가능","건물 주차장 이용. 자세한 안내는 오시는 길 참조."],
+ station:["정형","역·정류장 도보 3분","대중교통으로 오기 편한 위치입니다."],
+ years:["내과","개원 10년 이상","같은 자리에서 오래 진료해 왔습니다."],
+ access:["재활","1층 · 엘리베이터 · 장애인 편의","휠체어·유모차 출입이 편합니다."]};
+const COLOR={navy:"#0b4f8a",teal:"#1a8a7a",brown:"#7a5a2a",green:"#2f7d4f",wine:"#7b2d3b"};
+const HERO={B1:"photo",B2:"fact",A1:"full",E1:"brand"};
+const lines=s=>s.split("\n").map(x=>x.trim()).filter(Boolean);
+const list=s=>s.split(",").map(x=>x.trim()).filter(Boolean);
+const pair=s=>lines(s).map(l=>l.split("=").map(x=>x.trim()));
+const checked=id=>[...document.querySelectorAll(`#${id} input:checked`)].map(i=>i.value);
+document.getElementById("f").onsubmit=e=>{
+  e.preventDefault();const f=new FormData(e.target),g=k=>(f.get(k)||"").trim();
+  const sec=checked("sec"),feats=checked("feat");
+  const features=sec.includes("features")?[...feats.map(k=>({icon:FEAT[k][0],title:FEAT[k][1],desc:FEAT[k][2]})),...lines(g("feat_extra")).map(t=>({icon:"",title:t,desc:""}))]:[];
+  const fields=sec.includes("fields")?lines(g("fields")).map(l=>{const[a,b]=l.split("|");return{dept:(a||"").trim(),items:list(b||"")}}).filter(x=>x.dept):[];
+  const d={_기획:{design:g("design"),color_name:g("color"),sections:sec,have:checked("have"),refs:g("refs"),notes:g("notes"),received:new Date().toISOString().slice(0,10)},
+    draft:true,slug:(g("domain").split(".")[0]||"").replace(/[^a-z0-9-]/gi,"").toLowerCase()||"clinic",
+    name:g("name"),kind:g("kind"),tagline:g("tagline"),phone:g("phone"),address:g("address"),transport:g("transport"),parking:g("parking"),
+    departments:list(g("departments")),hero_style:HERO[g("design")]||"photo",color:COLOR[g("color")]||"",
+    hours:pair(g("hours")),
+    doctors:lines(g("doctors")).map(l=>{const[a,b,c,d2,e2]=l.split("|").map(x=>(x||"").trim());return{name:a,title:b,license:"의사 면허",specialty:c,degree:d2,career:e2?e2.split(";").map(x=>x.trim()).filter(Boolean):[],photo:""}}),
+    features,fields,facilities:list(g("facilities")),photos:[],hero_photo:"",logo:"",notices:[],nonpaid:[],
+    booking_url:g("booking_url"),kakao_url:g("kakao_url"),blog_url:g("blog_url"),
+    founder:g("founder"),opened:g("opened"),biz_no:"확인 필요",domain:g("domain"),approved_by:"",approved_at:""};
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));
+  a.download=d.name+"_사전정보.json";a.click();
+  alert("내려받은 JSON 파일을 크몽 채팅으로 보내주세요. 1~2일 안에 샘플 링크를 드립니다.");
+};
+</script>
+</body></html>

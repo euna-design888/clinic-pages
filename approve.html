@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>병·의원 안내 홈페이지 제작 요청서</title>
+<style>
+:root{color-scheme:light}body{font-family:"Malgun Gothic",sans-serif;max-width:720px;margin:0 auto;padding:24px 16px;color:#1d2b3a;background:#fff;line-height:1.5}
+h1{font-size:1.4rem}h2{font-size:1.05rem;margin:28px 0 8px;border-bottom:2px solid #1f6f8b;padding-bottom:4px}
+label{display:block;margin:12px 0 4px;font-weight:600}small{color:#5b6b7b;font-weight:400}
+input,textarea,select{width:100%;padding:8px;border:1px solid #c9d2db;border-radius:6px;font:inherit}textarea{min-height:70px}
+.box{background:#fff6e5;border:1px solid #f0c36d;padding:12px;border-radius:8px;font-size:.92rem}
+button{margin-top:24px;padding:12px 20px;background:#1f6f8b;color:#fff;border:0;border-radius:8px;font:inherit;font-weight:700;cursor:pointer}
+.chk label{display:flex;gap:8px;font-weight:400;margin:6px 0}
+</style></head><body>
+<h1>병·의원 안내 홈페이지 제작 요청서</h1>
+<div class="box">홈페이지에는 <b>의료법 제57조 제3항 심의 제외 항목</b>(명칭·주소·전화·진료과목·의료진·진료시간·시설·비급여 고지)만 싣습니다.
+후기·전후사진·이벤트·할인·"최고/유일/완치" 같은 표현은 넣지 않습니다. 모든 문구는 의료기관이 작성·승인한 것으로 기록됩니다.
+이 폼은 서버로 전송되지 않습니다. 작성 후 "파일 만들기"를 누르면 JSON 파일이 내려받아지니 그 파일을 크몽 채팅으로 보내주세요.</div>
+
+<form id="f">
+<h2>1. 기본 정보 <small>(필수)</small></h2>
+<label>의료기관 명칭 <small>등록된 정식 명칭</small><input name="name" required placeholder="예: 하늘정원내과의원"></label>
+<label>종별<select name="kind"><option>의원</option><option>치과의원</option><option>한의원</option><option>병원</option></select></label>
+<label>한 줄 소개 <small>(선택, 사실만. 예: "동네에서 편하게 다니는 내과")</small><input name="tagline"></label>
+<label>대표 전화<input name="phone" required placeholder="02-000-0000"></label>
+<label>주소 <small>층·호까지</small><input name="address" required></label>
+<label>교통 안내 <small>지하철·버스</small><input name="transport"></label>
+<label>주차 안내<input name="parking"></label>
+
+<h2>2. 진료과목 <small>(필수)</small></h2>
+<label>진료과목 <small>쉼표로 구분. 시설·장비·인력을 갖춘 과목만</small><input name="departments" required placeholder="내과, 소화기내과, 건강검진"></label>
+
+<h2>3. 진료시간 <small>(필수)</small></h2>
+<label>한 줄에 하나, "요일 = 시간" <small>점심시간·휴진일 포함</small><textarea name="hours" required placeholder="월·화·목·금 = 09:00 – 18:00
+수요일 = 09:00 – 13:00
+토요일 = 09:00 – 13:00
+점심시간 = 13:00 – 14:00
+일요일·공휴일 = 휴진"></textarea></label>
+
+<h2>4. 의료진 <small>(필수)</small></h2>
+<label>한 줄에 한 명, "성명 | 직함 | 면허 | 전문의 자격 | 비고" <small>전문의 표시는 자격증 사본을 함께 보내주실 때만 넣습니다</small>
+<textarea name="doctors" required placeholder="김하늘 | 원장 | 의사 면허 | 내과 전문의 | 소화기내과 분과전문의"></textarea></label>
+
+<h2>5. 시설·사진 <small>(선택)</small></h2>
+<label>시설 목록 <small>쉼표 구분</small><input name="facilities" placeholder="접수·대기실, 진료실 2실, 내시경실"></label>
+<label>대표 사진 파일명 <small>첫 화면 큰 사진 1장. 원장님 또는 외관 (환자 미포함)</small><input name="hero_photo" placeholder="director.jpg"></label>
+<label>로고 파일명 <small>(선택, 없으면 병원 이름 글자)</small><input name="logo" placeholder="logo.png"></label>
+<label>공지 <small>한 줄에 하나, "날짜 = 내용". 휴진·진료시간 변경만 (이벤트·할인 불가)</small><textarea name="notices" placeholder="2026-10-20 = 10월 24일(금) 오후 휴진합니다."></textarea></label>
+<label>사진 <small>환자가 찍히지 않은 시설·외관 사진만. 파일은 채팅으로 따로 보내주세요 (파일명만 적어주세요, 쉼표 구분)</small><input name="photos" placeholder="exterior.jpg, lobby.jpg"></label>
+
+<h2>6. 비급여 진료비용 <small>(의료법 제45조 고지 의무)</small></h2>
+<label>한 줄에 하나, "항목 = 금액" <small>병원에 게시 중인 표 그대로</small><textarea name="nonpaid" placeholder="수면내시경 관리료(위) = 50,000원
+독감 예방접종(4가) = 35,000원"></textarea></label>
+
+<h2>7. 예약·연락 링크 <small>(선택)</small></h2>
+<label>네이버 예약 주소<input name="booking_url" placeholder="https://booking.naver.com/..."></label>
+<label>카카오톡 채널 주소<input name="kakao_url" placeholder="https://pf.kakao.com/..."></label>
+
+<h2>8. 하단 표기 <small>(필수)</small></h2>
+<label>개설자 성명<input name="founder" required></label>
+<label>개원 시기<input name="opened" placeholder="2026년 1월"></label>
+<label>사업자등록번호<input name="biz_no" required placeholder="000-00-00000"></label>
+<label>도메인 희망 주소 <small>(선택. 없으면 제작사가 후보 3개 제안)</small><input name="domain" placeholder="skyclinic.co.kr"></label>
+
+<h2>9. 확인 <small>(필수)</small></h2>
+<div class="chk">
+<label><input type="checkbox" required> 위 문구·사진은 의료기관이 작성·제공했고 게시를 승인합니다.</label>
+<label><input type="checkbox" required> 의료진 면허·전문의 자격·인증 표시는 사본과 일치합니다.</label>
+<label><input type="checkbox" required> 사진의 초상권·저작권은 의료기관이 확보했습니다.</label>
+<label><input type="checkbox" required> 네이버 플레이스·블로그·SNS 등 광고 매체는 의료기관이 직접 관리합니다.</label>
+</div>
+<label>승인자 성명·직함<input name="approved_by" required placeholder="김하늘 원장"></label>
+<button type="submit">파일 만들기 (JSON 내려받기)</button>
+</form>
+
+<script>
+const lines=s=>s.split("\n").map(x=>x.trim()).filter(Boolean);
+const list=s=>s.split(",").map(x=>x.trim()).filter(Boolean);
+const pair=s=>lines(s).map(l=>l.split("=").map(x=>x.trim()));
+document.getElementById("f").onsubmit=e=>{
+  e.preventDefault();const f=new FormData(e.target),g=k=>(f.get(k)||"").trim();
+  const d={slug:(g("domain").split(".")[0]||"clinic").replace(/[^a-z0-9-]/gi,"").toLowerCase()||"clinic",
+    name:g("name"),kind:g("kind"),tagline:g("tagline"),phone:g("phone"),address:g("address"),transport:g("transport"),parking:g("parking"),
+    departments:list(g("departments")),hours:pair(g("hours")),
+    doctors:lines(g("doctors")).map(l=>{const[a,b,c,d2,e2]=l.split("|").map(x=>(x||"").trim());return{name:a,title:b,license:c,specialty:d2,note:e2}}),
+    facilities:list(g("facilities")),photos:list(g("photos")),hero_photo:g("hero_photo"),logo:g("logo"),notices:pair(g("notices")),nonpaid:pair(g("nonpaid")),
+    booking_url:g("booking_url"),kakao_url:g("kakao_url"),founder:g("founder"),opened:g("opened"),biz_no:g("biz_no"),domain:g("domain"),
+    approved_by:g("approved_by"),approved_at:new Date().toISOString().slice(0,10)};
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));
+  a.download=d.name+"_홈페이지요청.json";a.click();
+};
+</script>
+</body></html>
