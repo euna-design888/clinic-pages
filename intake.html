@@ -25,6 +25,10 @@ input:focus,textarea:focus,select:focus{border-color:var(--c);box-shadow:0 0 0 3
 .dcard{padding:0;overflow:hidden;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;text-align:left;font:inherit}.dcard.on{border-color:var(--c);box-shadow:0 0 0 3px rgba(11,79,138,.15)}
 .dcard img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}.dcard div{padding:12px 14px}.dcard b{display:block;font-size:1rem}.dcard small{color:var(--sub);font-size:.85rem;line-height:1.4;display:block}
 .sw{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:8px;vertical-align:-1px;border:1px solid rgba(0,0,0,.12)}
+.pal{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}.swb{font:inherit;border:0;background:none;padding:4px;cursor:pointer;display:grid;justify-items:center;gap:4px;border-radius:10px}
+.swb i{width:40px;height:40px;border-radius:50%;background:var(--h);border:1px solid rgba(0,0,0,.12);box-shadow:inset 0 -6px 12px rgba(0,0,0,.08);transition:transform .15s}.swb span{font-size:.72rem;color:var(--sub)}
+.swb:hover i{transform:scale(1.08)}.swb.on{background:var(--tint)}.swb.on i{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--h)}.swb.on span{color:var(--ink);font-weight:700}
+.ref{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px}@media(max-width:560px){.ref{grid-template-columns:1fr}}.ref .x{border:0;background:var(--tint);color:var(--sub);border-radius:10px;width:44px;cursor:pointer;font-size:1.2rem}
 .ccards{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:560px){.ccards{grid-template-columns:1fr}}
 .ccard{padding:0;overflow:hidden;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;text-align:left;font:inherit;position:relative}.ccard.on{border-color:var(--c);box-shadow:0 0 0 3px rgba(11,79,138,.15)}
 .ccard.on:after{content:"선택";position:absolute;top:10px;right:10px;background:var(--c);color:#fff;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:999px}
@@ -100,18 +104,24 @@ const tile=(k,c)=>`<div class="ct${c.round?" round":""}${c.line?" line":""}" sty
 <div class="ct-mid"><b>${c.n.split(" ")[0]}<br>의원</b><div class="ct-blk"><i style="background:${c.c[2]}"></i><i></i></div></div>
 <div class="ct-pal">${c.c.map(x=>`<i style="background:${x}"></i>`).join("")}<em>${esc(c.m)}</em></div></div>`;
 const FONT={round:"둥글고 부드럽게",sharp:"반듯하고 또렷하게",serif:"명조 · 고전적으로"},PHOTO={many:"사진 많이",few:"사진 조금",none:"사진 없이 글·색으로"},DENSE={airy:"여백 넓게",tight:"정보 촘촘히"};
-const COLOR={navy:["#0b4f8a","네이비 (의원 기본)"],teal:["#1a8a7a","틸 (치과)"],brown:["#7a5a2a","브라운 (한의원)"],green:["#2f7d4f","그린"],wine:["#7b2d3b","와인"]};
+// 컬러 팔레트 (의료기관 홈페이지에 쓰는 24색). 값은 hex 그대로 build.py color 로 들어간다
+const PALETTE=[["#0b4f8a","네이비"],["#1e40af","딥블루"],["#2563eb","로열블루"],["#0ea5e9","스카이"],["#1a8a7a","틸"],["#0f766e","딥틸"],["#2fb5a0","민트"],["#5f7a5a","세이지"],
+ ["#2f7d4f","그린"],["#65a30d","라임"],["#d9775c","테라코타"],["#ea580c","오렌지"],["#f59e0b","앰버"],["#b91c1c","레드"],["#7b2d3b","와인"],["#db2777","핑크"],
+ ["#7c3aed","바이올렛"],["#6d28d9","퍼플"],["#7a5a2a","브라운"],["#8b6a3f","골드브라운"],["#c9a96a","골드"],["#475569","슬레이트"],["#1a2430","차콜"],["#111111","블랙"]];
+const colorName=h=>h?((PALETTE.find(p=>p[0].toLowerCase()===h.toLowerCase())||[])[1]||h):"";
 const SECTIONS={features:"진료 환경 (차별점 카드)",fields:"진료 분야 (과목별 항목)",doctors:"의료진 (필수)",photos:"시설 사진",notices:"공지 (휴진·시간 변경)",nonpaid:"비급여 고지 (필수)"};
 const HAVE={photo_director:"원장 사진 (진료실)",photo_place:"외관 · 내부 사진",logo:"로고 파일",career:"원장 약력 문서",license:"전문의 자격증 · 학위증 사본",nonpaid:"비급여 진료비 표",biz:"사업자등록번호"};
 
 const blank=()=>({name:"",kind:"의원",phone:"",address:"",opened:"",depts:[],deptCustom:"",tagline:"",fields:{},
   days:Object.fromEntries(DAYS.map(d=>[d,{on:d!=="일",s:"09:00",e:d==="토"?"13:00":"18:00"}])),lunch:{on:true,s:"13:00",e:"14:00"},
-  doctors:[{name:"",title:"원장",spec:"",degree:"",career:""}],feats:[],featExtra:"",facilities:"",color:"",refs:"",
+  doctors:[{name:"",title:"원장",spec:"",degree:"",career:""}],feats:[],featExtra:"",facilities:"",color:"",refs:[{url:"",note:""}],
   sections:["features","fields","doctors","photos","notices","nonpaid"],have:[],booking:"",kakao:"",blog:"",domain:"",notes:"",
   existing:"없음",site_url:"",place_url:"",mood:[],styleNote:"",author:"",authorRole:"원장",uploads:{},
   concepts:["classic"],font:"",photoAmt:"",density:""});
 let S;try{S=Object.assign(blank(),JSON.parse(localStorage.getItem("intake_v2")||"{}"))}catch{S=blank()}
 S.uploads={}; // 사진은 용량 때문에 기기 저장 안 함 (새로고침하면 다시 올림)
+if(!Array.isArray(S.refs))S.refs=[{url:String(S.refs||""),note:""}]; // 구버전 저장값 호환
+if(S.color&&!S.color.startsWith("#"))S.color={navy:"#0b4f8a",teal:"#1a8a7a",brown:"#7a5a2a",green:"#2f7d4f",wine:"#7b2d3b"}[S.color]||"";
 let step=+(localStorage.getItem("intake_v2_step")||0);
 const save=()=>{try{const{uploads,...rest}=S;localStorage.setItem("intake_v2",JSON.stringify(rest));localStorage.setItem("intake_v2_step",step)}catch{}};
 const MOOD=["차분한","깔끔한","따뜻한","밝은","전문적인","고급스러운","친근한","심플한"];
@@ -170,7 +180,11 @@ ${S.depts.map(d=>`<input data-field="${esc(d)}" value="${esc(S.fields[d]||"")}" 
 {t:"디자인 컨셉",r:()=>`<h2>끌리는 분위기를 골라 주세요</h2><p class="lead">아래는 <b>분위기 제안</b>입니다. 이 그림이 그대로 나오는 게 아니라, 고른 분위기 + 다음 장의 취향 + 귀 병원 자료로 <b>새로 디자인</b>합니다. 1~2개.</p>
 <div class="q"><div class="ccards">${Object.entries(CONCEPT).map(([k,c])=>`<button class="ccard${S.concepts.includes(k)?" on":""}" data-concept="${k}">${tile(k,c)}<div class="ccard-b"><b>${c.n}</b><small>${c.f}</small></div></button>`).join("")}</div>
 <span class="help">첫 번째로 고른 것이 주 컨셉, 두 번째는 섞을 요소입니다. 구조 예시는 <a href="out/catalog/index.html" target="_blank" style="color:var(--c)">샘플 카탈로그</a>에서 볼 수 있어요.</span></div>
-<div class="q"><span class="lb">주 색상</span><div class="chips">${Object.entries(COLOR).map(([k,[h,n]])=>`<button class="chip${S.color===k?" on":""}" data-set="color" data-v="${k}"><i class="sw" style="background:${h}"></i>${n}</button>`).join("")}<button class="chip${S.color===""?" on":""}" data-set="color" data-v="">컨셉에 맞춰 추천</button></div></div>`},
+<div class="q"><span class="lb">주 색상 <small style="font-weight:400;color:var(--sub)">· 선택: <b style="color:${S.color||"var(--sub)"}">${colorName(S.color)||"컨셉에 맞춰 추천"}</b></small></span>
+<div class="pal">${PALETTE.map(([h,n])=>`<button class="swb${S.color.toLowerCase()===h?" on":""}" data-set="color" data-v="${h}" title="${n}" style="--h:${h}"><i></i><span>${n}</span></button>`).join("")}</div>
+<div class="chips" style="margin-top:12px;align-items:center"><button class="chip${S.color===""?" on":""}" data-set="color" data-v="">컨셉에 맞춰 추천</button>
+<label class="chip" style="display:inline-flex;gap:8px;align-items:center;cursor:pointer"><input type="color" data-k="color" value="${S.color||"#0b4f8a"}" style="width:28px;height:28px;padding:0;border:0;background:none">직접 고르기 (병원 로고 색 등)</label></div>
+<span class="help">로고나 간판에 쓰는 색이 있으면 그 색을 고르세요. 보조색·명도는 컨셉에 맞춰 제작사가 맞춥니다.</span></div>`},
 
 {t:"원하는 스타일",r:()=>`<h2>원하시는 스타일</h2><p class="lead">작성하시는 분의 취향을 그대로 적어 주세요. 여기서 색다른 결과물이 나옵니다.</p>
 <div class="q"><span class="lb">분위기 단어</span><div class="chips">${MOOD.map(m=>`<button class="chip${S.mood.includes(m)?" on":""}" data-toggle="mood" data-v="${m}">${m}</button>`).join("")}</div></div>
@@ -178,7 +192,9 @@ ${S.depts.map(d=>`<input data-field="${esc(d)}" value="${esc(S.fields[d]||"")}" 
 <div class="row2"><div class="q"><span class="lb">사진 비중</span><div class="cards">${Object.entries(PHOTO).map(([k,v])=>`<button class="card${S.photoAmt===k?" on":""}" data-set="photoAmt" data-v="${k}"><b>${v}</b></button>`).join("")}</div></div>
 <div class="q"><span class="lb">화면 밀도</span><div class="cards">${Object.entries(DENSE).map(([k,v])=>`<button class="card${S.density===k?" on":""}" data-set="density" data-v="${k}"><b>${v}</b></button>`).join("")}</div></div></div>
 <div class="q"><label>이런 느낌으로 · 이런 건 싫어요</label><textarea data-k="styleNote" placeholder="예) 어르신 환자가 많아 글자 크게 / 파란색은 싫다 / 원장 사진은 안 넣고 싶다 / ○○병원 같은 느낌">${esc(S.styleNote)}</textarea></div>
-<div class="q"><label>참고하고 싶은 홈페이지 · 캡처</label><input data-k="refs" value="${esc(S.refs)}" placeholder="주소 1~2개 (병원이 아니어도 됩니다)">${uploader("refs")}</div>`},
+<div class="q"><span class="lb">참고하고 싶은 홈페이지 · 캡처</span><span class="help" style="margin:0 0 10px">병원이 아니어도 됩니다 (카페·브랜드·앱). 어디가 좋았는지 한마디 적어 주시면 그 요소를 살립니다.</span>
+${S.refs.map((r,i)=>`<div class="ref"><input data-ref="${i}.url" value="${esc(r.url)}" placeholder="https://..." inputmode="url"><input data-ref="${i}.note" value="${esc(r.note)}" placeholder="좋았던 점 (예: 첫 화면 사진, 글자 크기, 색)">${S.refs.length>1?`<button class="x" data-rmref="${i}" title="삭제">×</button>`:"<span></span>"}</div>`).join("")}
+<button class="add" data-addref="1" style="margin-bottom:12px">+ 참고 링크 추가</button>${uploader("refs")}</div>`},
 
 {t:"넣을 것 · 자료",r:()=>`<h2>넣을 섹션과 보낼 자료</h2><p class="lead">섹션은 기본 전부 켜져 있어요. 빼고 싶은 것만 끄세요.</p>
 <div class="q"><span class="lb">넣을 섹션</span><div class="chips">${Object.entries(SECTIONS).map(([k,v])=>{const fixed=k==="doctors"||k==="nonpaid";return`<button class="chip${S.sections.includes(k)?" on":""}" data-toggle="sections" data-v="${k}"${fixed?" disabled":""}>${v}</button>`}).join("")}</div><span class="help">후기 · 전후사진 · 이벤트 · 건강칼럼은 의료법 56조 위험으로 제작하지 않습니다.</span></div>
@@ -222,10 +238,11 @@ document.getElementById("prev").onclick=()=>{step--;render();scrollTo(0,0)};
 document.getElementById("reset").onclick=()=>{if(confirm("입력한 내용을 모두 지우고 처음부터 할까요?")){S=blank();step=0;render()}};
 
 // 입력 → 상태 (포커스 유지: 텍스트는 재렌더 안 함)
-main.addEventListener("input",e=>{const t=e.target;
+main.addEventListener("input",e=>{const t=e.target;if(t.type==="color")return; // 색은 change 에서 (드래그 중 재렌더 방지)
   if(t.dataset.k){const k=t.dataset.k;if(k.startsWith("d."))S.days[k.slice(4)][k[2]]=t.value;else if(k.startsWith("l."))S.lunch[k[2]]=t.value;else S[k]=t.value}
   else if(t.dataset.field!==undefined)S.fields[t.dataset.field]=t.value;
   else if(t.dataset.doc){const[i,f]=t.dataset.doc.split(".");S.doctors[i][f]=t.value}
+  else if(t.dataset.ref){const[i,f]=t.dataset.ref.split(".");S.refs[i][f]=t.value}
   t.closest(".q")?.classList.remove("bad");save()});
 main.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.id)return;const d=b.dataset;
   if(d.set!==undefined){S[d.set]=d.v}
@@ -236,10 +253,13 @@ main.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.id
   else if(d.concept){const a=S.concepts,i=a.indexOf(d.concept);if(i>=0){if(a.length>1)a.splice(i,1)}else{a.push(d.concept);if(a.length>2)a.shift()}}
   else if(d.pick){e.preventDefault();b.parentElement.querySelector("input[type=file]").click();return}
   else if(d.rmup){const[k,i]=d.rmup.split(".");S.uploads[k].splice(+i,1)}
+  else if(d.addref){S.refs.push({url:"",note:""})}else if(d.rmref){S.refs.splice(+d.rmref,1)}
   else return;
   e.preventDefault();render()});
 // 사진: 긴 변 1600px · JPEG 0.8 로 줄여 data URL 로 보관 → JSON 에 함께 담김 (서버 없음)
-main.addEventListener("change",async e=>{const t=e.target;if(!t.dataset.upin)return;const k=t.dataset.upin;S.uploads[k]=S.uploads[k]||[];
+main.addEventListener("change",async e=>{const t=e.target;
+  if(t.type==="color"){S.color=t.value;render();return}
+  if(!t.dataset.upin)return;const k=t.dataset.upin;S.uploads[k]=S.uploads[k]||[];
   for(const f of t.files){if(upCount()>=12){alert("사진은 최대 12장입니다.");break}
     try{const data=await shrink(f);S.uploads[k].push({name:f.name,data})}catch{alert(f.name+" 은(는) 읽을 수 없는 파일입니다.")}}
   render()});
@@ -259,17 +279,18 @@ function toJSON(){const depts=[...S.depts,...list(S.deptCustom)];
   const fields=S.sections.includes("fields")?depts.map(d=>({dept:d,items:list(S.fields[d]||"")})).filter(x=>x.items.length):[];
   const 첨부=Object.entries(S.uploads).flatMap(([k,a])=>a.map(f=>({kind:k,name:f.name,data:f.data})));
   const main_c=CONCEPT[S.concepts[0]]||CONCEPT.classic;
-  return{_기획:{concepts:S.concepts.map(k=>({key:k,name:CONCEPT[k].n})),color_name:S.color,mood:S.mood,font:S.font,photo_amount:S.photoAmt,density:S.density,style_note:S.styleNote,sections:S.sections,have:S.have,refs:S.refs,notes:S.notes,
+  return{_기획:{concepts:S.concepts.map(k=>({key:k,name:CONCEPT[k].n})),color:S.color,color_name:colorName(S.color),mood:S.mood,font:S.font,photo_amount:S.photoAmt,density:S.density,style_note:S.styleNote,sections:S.sections,have:S.have,
+      refs:S.refs.map(r=>({url:r.url.trim(),note:r.note.trim()})).filter(r=>r.url||r.note),notes:S.notes,
       existing_site:S.existing,site_url:S.site_url.trim(),place_url:S.place_url.trim(),author:S.author.trim(),author_role:S.authorRole,
       received:new Date().toISOString().slice(0,10),form:"intake v2.1"},
     _첨부:첨부,
     draft:true,slug:(S.domain.split(".")[0]||"").replace(/[^a-z0-9-]/gi,"").toLowerCase()||"clinic",
     name:S.name.trim(),kind:S.kind,tagline:S.tagline.trim(),phone:S.phone.trim(),address:S.address.trim(),transport:"",parking:S.feats.includes("park")?"주차 가능 (상세 확인 필요)":"",
-    departments:depts,concept:S.concepts[0]||"classic",hero_style:S.photoAmt==="none"&&main_c.hero==="photo"?"fact":"",color:COLOR[S.color]?.[0]||"",hours:hoursOut(),
+    departments:depts,concept:S.concepts[0]||"classic",hero_style:S.photoAmt==="none"&&main_c.hero==="photo"?"fact":"",color:S.color,hours:hoursOut(),
     doctors:S.doctors.filter(d=>d.name.trim()).map(d=>({name:d.name.trim(),title:d.title.trim(),license:"의사 면허",specialty:d.spec.trim(),degree:d.degree.trim(),career:lines(d.career),photo:""})),
     features,fields,facilities:list(S.facilities),photos:[],hero_photo:"",logo:"",notices:[],nonpaid:[],
     booking_url:S.booking.trim(),kakao_url:S.kakao.trim(),blog_url:S.blog.trim(),founder:S.doctors[0]?.name.trim()||"",opened:S.opened.trim(),biz_no:"확인 필요",domain:S.domain.trim(),approved_by:"",approved_at:""}}
-const summary=d=>`${d.name||"(명칭 없음)"} · ${d.kind} · ${d.departments.join(", ")||"과목 없음"}\n컨셉 ${S.concepts.map(k=>CONCEPT[k].n).join(" + ")} · ${COLOR[S.color]?.[1]||"색 추천"} · ${[...S.mood,FONT[S.font],PHOTO[S.photoAmt],DENSE[S.density]].filter(Boolean).join("·")||"취향 미입력"}\n의료진 ${d.doctors.length}명 · 차별점 ${S.feats.length}개 · 사진 ${d._첨부.length}장 · 진료시간 ${d.hours.map(h=>h.join(" ")).join(" / ")}\n작성 ${d._기획.author||"(성함 없음)"} (${d._기획.author_role})`;
+const summary=d=>`${d.name||"(명칭 없음)"} · ${d.kind} · ${d.departments.join(", ")||"과목 없음"}\n컨셉 ${S.concepts.map(k=>CONCEPT[k].n).join(" + ")} · ${colorName(S.color)||"색 추천"} · ${[...S.mood,FONT[S.font],PHOTO[S.photoAmt],DENSE[S.density]].filter(Boolean).join("·")||"취향 미입력"} · 참고 ${d._기획.refs.length}개\n의료진 ${d.doctors.length}명 · 차별점 ${S.feats.length}개 · 사진 ${d._첨부.length}장 · 진료시간 ${d.hours.map(h=>h.join(" ")).join(" / ")}\n작성 ${d._기획.author||"(성함 없음)"} (${d._기획.author_role})`;
 function download(d){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));a.download=(d.name||"병원")+"_사전정보.json";a.click()}
 render();
 </script>
