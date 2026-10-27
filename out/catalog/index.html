@@ -1,39 +1,47 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>병·의원 홈페이지 디자인 카탈로그</title>
+<title>병·의원 홈페이지 디자인 컨셉 카탈로그</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
-body{font-family:Pretendard,"Malgun Gothic",sans-serif;margin:0;padding:28px 16px 60px;color:#17212b;background:#f4f6f9;line-height:1.55}
+:root{color-scheme:light}body{font-family:Pretendard,"Malgun Gothic",sans-serif;margin:0;padding:28px 16px 60px;color:#17212b;background:#f4f6f9;line-height:1.55}
 .wrap{max-width:1100px;margin:0 auto}h1{font-size:1.5rem;margin:0 0 4px}.lead{color:#5f6c7b;margin:0 0 20px}
 .how{background:#fff;border:1px solid #e4e9ef;border-radius:12px;padding:14px 18px;font-size:.95rem;margin-bottom:20px}.how b{color:#0b4f8a}
-.colors{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}.colors label{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e4e9ef;border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.92rem}
-.colors label:has(:checked){border-color:#0b4f8a;box-shadow:0 0 0 2px #0b4f8a22}.colors input{display:none}.colors i{width:16px;height:16px;border-radius:50%;display:inline-block}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:20px}@media(max-width:560px){.grid{grid-template-columns:1fr}}
 .card{background:#fff;border:1px solid #e4e9ef;border-radius:16px;overflow:hidden}
 .shot{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#dde3ea}.shot iframe{position:absolute;left:0;top:0;width:1280px;height:800px;border:0;transform-origin:0 0;transform:scale(var(--s,.375));pointer-events:none}
-.b{padding:16px 18px}.b b{font-size:1.15rem}.b b span{font-weight:600;color:#5f6c7b;font-size:1rem}.b p{margin:6px 0 4px}.b small{color:#5f6c7b}
+.b{padding:16px 18px}.b b{font-size:1.15rem}.b p{margin:6px 0 4px}.b small{color:#5f6c7b}
 .open{display:inline-block;margin-top:10px;color:#0b4f8a;font-weight:700;text-decoration:none}
 .cta{margin-top:28px;background:#0b4f8a;color:#fff;border-radius:14px;padding:20px 22px}.cta a{color:#fff;font-weight:800}
 </style></head><body><div class="wrap">
-<h1>병·의원 홈페이지 디자인 카탈로그</h1>
-<p class="lead">가상 병원(하늘정원내과의원) 데이터로 만든 샘플입니다. 내용은 귀 병원 정보로 바뀝니다.</p>
-<div class="how"><b>고르는 법</b> ① 아래 4개 중 첫 화면 유형 하나 ② 색 하나 → <b>사전정보폼 6번</b>에 체크. 모든 유형은 전화·진료시간·오시는 길·의료진·비급여 고지를 같은 순서로 담습니다(의료법 57조 3항 범위).</div>
-<div class="colors" id="colors"><label><input type="radio" name="c" value="navy" checked><i style="background:#0b4f8a"></i>네이비 (의원 기본)</label><label><input type="radio" name="c" value="teal"><i style="background:#1a8a7a"></i>틸 (치과)</label><label><input type="radio" name="c" value="brown"><i style="background:#7a5a2a"></i>브라운 (한의원)</label><label><input type="radio" name="c" value="green"><i style="background:#2f7d4f"></i>그린</label><label><input type="radio" name="c" value="wine"><i style="background:#7b2d3b"></i>와인</label></div>
-<div class="grid" id="grid"><article class="card" data-code="B1">
-<div class="shot"><iframe src="B1-navy/index.html" loading="lazy" title="B1"></iframe></div>
-<div class="b"><b>B1 <span>사진 + 예약 패널</span></b><p>기본. 외관·원장 사진이 있을 때. 전화·진료시간·오시는 길이 첫 화면에서 끝남</p><small>울산대·강북삼성 방식</small>
-<a class="open" href="B1-navy/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card" data-code="B2">
-<div class="shot"><iframe src="B2-navy/index.html" loading="lazy" title="B2"></iframe></div>
-<div class="b"><b>B2 <span>사실 칩 + 예약 패널</span></b><p>사진이 없거나 약할 때. 전문의·장비·지정기관이 글자로 바로 보임</p><small>사진 오면 B1로 전환 가능</small>
-<a class="open" href="B2-navy/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card" data-code="A1">
-<div class="shot"><iframe src="A1-navy/index.html" loading="lazy" title="A1"></iframe></div>
-<div class="b"><b>A1 <span>풀화면 사진 + 큰 제목</span></b><p>사진이 좋을 때. 대학병원 첫 화면 느낌. 전화·시간은 버튼으로</p><small>세브란스·경희 방식</small>
-<a class="open" href="A1-navy/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card" data-code="E1">
-<div class="shot"><iframe src="E1-navy/index.html" loading="lazy" title="E1"></iframe></div>
-<div class="b"><b>E1 <span>어두운 톤 + 과목 타이포</span></b><p>치과·한의원 브랜딩. 과목을 큰 글자로. 실적 숫자는 넣지 않음</p><small>나누리·자생 방식(숫자 제외)</small>
-<a class="open" href="E1-navy/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article></div>
+<h1>병·의원 홈페이지 디자인 컨셉 카탈로그</h1>
+<p class="lead">가상 병원(하늘정원내과의원) 데이터로 같은 내용을 8가지 컨셉으로 만든 예시입니다. 글꼴·색·모서리·배경·첫 화면이 컨셉마다 다릅니다.</p>
+<div class="how"><b>고르는 법</b> 끌리는 컨셉 1~2개를 <b>사전정보폼 7단계</b>에서 고르고, 8단계에 취향(글꼴·사진 비중·싫은 것)을 적어 주세요. 귀 병원 자료와 합쳐 새로 디자인합니다. 모든 컨셉은 전화·진료시간·오시는 길·의료진·비급여 고지를 담습니다(의료법 57조 3항 범위).</div>
+<div class="grid"><article class="card">
+<div class="shot"><iframe src="classic/index.html" loading="lazy" title="클래식 신뢰"></iframe></div>
+<div class="b"><b>클래식 신뢰</b><p>대학병원처럼 반듯하고 믿음직</p><small>맞는 곳: 의원 전반 · 신경외과 · 정형외과 · 내과</small>
+<a class="open" href="classic/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card">
+<div class="shot"><iframe src="warm/index.html" loading="lazy" title="따뜻한 동네"></iframe></div>
+<div class="b"><b>따뜻한 동네</b><p>크림색 · 둥근 글꼴 · 둥근 모서리</p><small>맞는 곳: 소아청소년과 · 가정의학과 · 내과</small>
+<a class="open" href="warm/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card">
+<div class="shot"><iframe src="minimal/index.html" loading="lazy" title="미니멀 화이트"></iframe></div>
+<div class="b"><b>미니멀 화이트</b><p>흰 바탕 · 검정 글자 · 포인트 1색 · 여백 넓게</p><small>맞는 곳: 피부과 · 안과 · 치과 · 검진센터</small>
+<a class="open" href="minimal/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card">
+<div class="shot"><iframe src="editorial/index.html" loading="lazy" title="에디토리얼"></iframe></div>
+<div class="b"><b>에디토리얼</b><p>명조 제목 · 잡지 같은 큰 타이포</p><small>맞는 곳: 한의원 · 여성의원 · 고급 클리닉</small>
+<a class="open" href="editorial/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card">
+<div class="shot"><iframe src="dark/index.html" loading="lazy" title="다크 프리미엄"></iframe></div>
+<div class="b"><b>다크 프리미엄</b><p>차콜 바탕 · 금속빛 포인트 · 과목 큰 글자</p><small>맞는 곳: 치과 · 피부과 · 성형외과</small>
+<a class="open" href="dark/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card">
+<div class="shot"><iframe src="natural/index.html" loading="lazy" title="내추럴 그린"></iframe></div>
+<div class="b"><b>내추럴 그린</b><p>세이지 그린 · 우드 톤 · 자연 사진</p><small>맞는 곳: 한의원 · 재활의학과 · 요양·통증</small>
+<a class="open" href="natural/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card">
+<div class="shot"><iframe src="vivid/index.html" loading="lazy" title="비비드 프렌들리"></iframe></div>
+<div class="b"><b>비비드 프렌들리</b><p>밝은 색면 블록 · 큰 아이콘 · 또렷한 버튼</p><small>맞는 곳: 소아과 · 이비인후과 · 가족 단위 병원</small>
+<a class="open" href="vivid/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article><article class="card">
+<div class="shot"><iframe src="photo/index.html" loading="lazy" title="포토 임팩트"></iframe></div>
+<div class="b"><b>포토 임팩트</b><p>원장·시설 사진을 화면 가득 · 흰 큰 제목</p><small>맞는 곳: 사진 자산이 좋은 병원 · 신축 개원</small>
+<a class="open" href="photo/index.html" target="_blank" rel="noopener">크게 보기 ↗</a></div></article></div>
 <div class="cta">정했으면 → <a href="../../intake.html">사전정보폼 작성 (10분) ↗</a> · 폼 JSON을 보내주시면 1~2일 안에 귀 병원 샘플 링크를 드립니다.</div>
 </div>
-<script>
-const fit=()=>document.querySelectorAll('.shot').forEach(s=>s.style.setProperty('--s',s.clientWidth/1280));fit();addEventListener('resize',fit);
-document.getElementById('colors').onchange=e=>document.querySelectorAll('.card').forEach(c=>{const u=c.dataset.code+'-'+e.target.value+'/index.html';c.querySelector('iframe').src=u;c.querySelector('.open').href=u});
-</script></body></html>
+<script>const fit=()=>document.querySelectorAll('.shot').forEach(s=>s.style.setProperty('--s',s.clientWidth/1280));fit();addEventListener('resize',fit);</script>
+</body></html>
