@@ -1,141 +1,59 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>병·의원 홈페이지 사전 정보 (10분)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
-:root{color-scheme:light}body{font-family:"Malgun Gothic",sans-serif;max-width:760px;margin:0 auto;padding:24px 16px;color:#1d2b3a;background:#fff;line-height:1.55}
-h1{font-size:1.4rem;margin-bottom:4px}.lead{color:#5b6b7b;margin-top:0}
-h2{font-size:1.05rem;margin:32px 0 8px;border-bottom:2px solid #0b4f8a;padding-bottom:4px}h2 small{color:#5b6b7b;font-weight:400;font-size:.85rem}
-label{display:block;margin:12px 0 4px;font-weight:600}small{color:#5b6b7b;font-weight:400}
-input,textarea,select{width:100%;padding:8px;border:1px solid #c9d2db;border-radius:6px;font:inherit}textarea{min-height:64px}
-.box{background:#eef5fb;border:1px solid #b9d3ea;padding:12px;border-radius:8px;font-size:.92rem}
-.warn{background:#fff6e5;border-color:#f0c36d}
-.chk label,.rad label{display:flex;gap:8px;align-items:flex-start;font-weight:400;margin:6px 0;padding:8px 10px;border:1px solid #e4e9ef;border-radius:8px;cursor:pointer}
-.chk label:has(:checked),.rad label:has(:checked){border-color:#0b4f8a;background:#f3f8fd}
-.chk input,.rad input{width:auto;margin-top:4px;flex:none}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}@media(max-width:600px){.grid{grid-template-columns:1fr}}
-.sw{display:inline-block;width:18px;height:18px;border-radius:50%;vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,.15)}
-.design{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:600px){.design{grid-template-columns:1fr}}
-.design label{display:block;padding:12px}.design b{display:block;color:#0b4f8a}.design span{font-size:.88rem;color:#5b6b7b}
-.design .prev{height:72px;border-radius:6px;margin:8px 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;font-weight:700}
-button{margin-top:28px;padding:14px 22px;background:#0b4f8a;color:#fff;border:0;border-radius:8px;font:inherit;font-weight:700;cursor:pointer;width:100%}
-a{color:#0b4f8a}
+:root{color-scheme:light;--c:#0b4f8a;--c2:#083a66;--tint:#eef4fa;--ink:#17212b;--sub:#5f6c7b;--line:#dfe5ec;--bg:#f6f8fa;--err:#c0392b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}[hidden]{display:none!important}
+body{margin:0;font-family:Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:17px;line-height:1.6;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;word-break:keep-all;letter-spacing:-.01em}
+.bar{position:fixed;top:0;left:0;right:0;height:4px;background:var(--line);z-index:5}.bar i{display:block;height:100%;background:var(--c);width:0;transition:width .3s}
+.top{position:fixed;top:4px;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:.9rem;color:var(--sub);z-index:5;background:linear-gradient(var(--bg) 70%,transparent)}
+.top b{color:var(--c)}.top a{color:var(--sub);text-decoration:none;cursor:pointer}
+main{max-width:640px;margin:0 auto;padding:88px 20px 140px;min-height:100vh}
+h1{font-size:2rem;line-height:1.25;margin:0 0 12px;letter-spacing:-.02em}h2{font-size:1.65rem;line-height:1.3;margin:0 0 8px;letter-spacing:-.02em}
+.lead{color:var(--sub);margin:0 0 28px;font-size:1.05rem}
+.q{margin:0 0 26px}.q>label,.q>.lb{display:block;font-weight:700;margin-bottom:8px}.q .lb i,.q label i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--c);vertical-align:middle;margin-left:6px}
+.help{display:block;color:var(--sub);font-size:.9rem;font-weight:400;margin-top:6px}
+input,textarea,select{width:100%;font:inherit;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);outline:0;transition:border .15s,box-shadow .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(11,79,138,.12)}textarea{min-height:92px;resize:vertical}
+.err{color:var(--err);font-size:.88rem;margin-top:6px;display:none}.q.bad .err{display:block}.q.bad input,.q.bad textarea{border-color:var(--err)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{font:inherit;font-size:.97rem;padding:10px 16px;border:1.5px solid var(--line);border-radius:999px;background:#fff;cursor:pointer;color:var(--ink);transition:.15s}
+.chip:hover{border-color:var(--c)}.chip.on{background:var(--c);border-color:var(--c);color:#fff;font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}.card{font:inherit;text-align:left;padding:14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer}
+.card.on{border-color:var(--c);background:var(--tint);box-shadow:inset 0 0 0 1px var(--c)}.card b{display:block}.card small{color:var(--sub);font-size:.85rem}
+.dcards{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:560px){.dcards{grid-template-columns:1fr}}
+.dcard{padding:0;overflow:hidden;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;text-align:left;font:inherit}.dcard.on{border-color:var(--c);box-shadow:0 0 0 3px rgba(11,79,138,.15)}
+.dcard img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}.dcard div{padding:12px 14px}.dcard b{display:block;font-size:1rem}.dcard small{color:var(--sub);font-size:.85rem;line-height:1.4;display:block}
+.sw{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:8px;vertical-align:-1px;border:1px solid rgba(0,0,0,.12)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:560px){.row2{grid-template-columns:1fr}}
+.days{display:grid;gap:8px}.day{display:grid;grid-template-columns:64px 1fr auto 1fr;gap:8px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px}
+.day.off{opacity:.55}.day select{padding:9px 10px}.day .tg{font:inherit;font-weight:700;padding:9px 0;border:0;border-radius:8px;background:var(--tint);color:var(--c);cursor:pointer}.day.off .tg{background:#eee;color:var(--sub)}
+.day.off select{visibility:hidden}.day span{color:var(--sub)}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.presets .chip{font-size:.9rem;padding:8px 12px}
+.doc{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;position:relative}.doc .x{position:absolute;right:10px;top:8px;border:0;background:none;color:var(--sub);font-size:1.2rem;cursor:pointer}
+.doc .row2{margin-bottom:8px}.doc textarea{min-height:64px}
+.add{font:inherit;width:100%;padding:13px;border:1.5px dashed var(--c);border-radius:10px;background:var(--tint);color:var(--c);font-weight:700;cursor:pointer}
+.note{background:#fff;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--sub);margin:0 0 24px}
+.nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 20px calc(12px + env(safe-area-inset-bottom));z-index:5}
+.nav .in{max-width:640px;margin:0 auto;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.btn{font:inherit;font-weight:700;padding:15px 26px;border-radius:12px;border:0;background:var(--c);color:#fff;cursor:pointer;font-size:1.05rem;min-width:140px}.btn:hover{background:var(--c2)}.btn.big{width:100%;padding:18px;font-size:1.15rem}
+.ghost{font:inherit;background:none;border:0;color:var(--sub);cursor:pointer;font-size:1rem;padding:12px 8px}.skip{font-size:.9rem;color:var(--sub);background:none;border:0;cursor:pointer;text-decoration:underline;display:none;margin-left:auto}
+.start{padding-top:12vh;text-align:left}.start h1{font-size:2.3rem}.start ul{padding-left:0;list-style:none;margin:0 0 32px;color:var(--sub)}.start li{padding:4px 0}.start li b{color:var(--ink)}
+.done{padding-top:8vh}.done .box{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:24px;margin:20px 0}.done ol{padding-left:20px;color:var(--sub)}.done ol b{color:var(--ink)}
+.summary{font-size:.92rem;color:var(--sub);background:var(--tint);border-radius:10px;padding:12px 14px;margin-top:14px;white-space:pre-wrap}
+footer{text-align:center;color:var(--sub);font-size:.8rem;padding:20px}
 </style></head><body>
-<h1>병·의원 홈페이지 사전 정보</h1>
-<p class="lead">약 10분. 이 답으로 <b>샘플 홈페이지 1안을 바로 만들어</b> 보여드립니다. 모르는 칸은 비워 두세요(제작사가 공개 등록정보로 채우고 "확인 필요"로 표시합니다).</p>
-<div class="box">홈페이지에는 의료법 제57조 제3항 심의 제외 항목(명칭·주소·전화·진료과목·의료진·진료시간·시설·비급여 고지)만 싣습니다. 후기·전후사진·이벤트·할인·"최고/유일/완치" 표현은 넣지 않습니다.
-이 폼은 서버로 전송되지 않습니다. 마지막 "파일 만들기"를 누르면 JSON 파일이 내려받아지니 크몽 채팅으로 보내주세요.</div>
-
-<form id="f">
-<h2>1. 기본 정보 <small>필수 3개: 명칭·전화·주소</small></h2>
-<label>의료기관 명칭 <small>등록된 정식 명칭</small><input name="name" required placeholder="예: 하늘정원내과의원"></label>
-<div class="grid">
-<label>종별<select name="kind"><option>의원</option><option>치과의원</option><option>한의원</option><option>병원</option></select></label>
-<label>개원 시기 <small>예: 2006년</small><input name="opened" placeholder="2006년 3월"></label>
-<label>대표 전화<input name="phone" required placeholder="02-000-0000"></label>
-<label>개설자(원장) 성명<input name="founder"></label>
-</div>
-<label>주소 <small>층·호까지</small><input name="address" required></label>
-<label>한 줄 소개 <small>사실만. 예: "신경외과 전문의가 직접 진료하는 동네 의원". 효과·비교 표현은 빌드에서 막힙니다</small><input name="tagline"></label>
-<div class="grid">
-<label>교통 <small>지하철·버스·정류장</small><input name="transport"></label>
-<label>주차<input name="parking" placeholder="건물 지하 1시간 무료"></label>
-<label>네이버 예약 주소<input name="booking_url" placeholder="https://booking.naver.com/..."></label>
-<label>카카오톡 채널 주소<input name="kakao_url" placeholder="https://pf.kakao.com/..."></label>
-<label>블로그·SNS 주소<input name="blog_url" placeholder="https://blog.naver.com/..."></label>
-<label>희망 도메인 <small>없으면 후보 3개 제안</small><input name="domain" placeholder="skyclinic.co.kr"></label>
-</div>
-
-<h2>2. 진료과목·진료 분야</h2>
-<label>진료과목 <small>쉼표 구분. 시설·장비·인력을 갖춘 과목만</small><input name="departments" required placeholder="신경외과, 정형외과, 영상의학과"></label>
-<label>진료 분야 <small>환자가 검색하는 "증상·진료 이름"만. 한 줄에 과목 하나: "과목 | 항목, 항목" (효과·결과 표현 X)</small>
-<textarea name="fields" placeholder="신경외과 | 목·허리 디스크, 척추관 협착증, 두통·어지럼, 손발 저림
-정형외과 | 무릎·어깨 통증, 골절·염좌, 골다공증 검사, 물리치료"></textarea></label>
-
-<h2>3. 진료시간</h2>
-<label>한 줄에 하나, "요일 = 시간" <small>점심·휴진 포함</small><textarea name="hours" required placeholder="월·화·수·금 = 09:00 – 18:00
-목요일 = 09:00 – 12:30
-토요일 = 09:00 – 13:00
-점심시간 = 12:30 – 14:00
-일요일·공휴일 = 휴진"></textarea></label>
-
-<h2>4. 의료진</h2>
-<label>한 줄에 한 명: "성명 | 직함 | 전문의 자격 | 학위 | 약력(세미콜론 구분)" <small>전문의·박사 표시는 나중에 사본 확인 후 게시</small>
-<textarea name="doctors" required placeholder="박창현 | 원장 | 신경외과 전문의 | 의학박사 | ○○대 의대 졸업; ○○병원 신경외과 수료"></textarea></label>
-
-<h2>5. 우리 병원의 다른 점 <small>해당하는 것 전부 체크 → 첫 화면·"진료 환경" 카드가 됩니다</small></h2>
-<div class="box warn" style="margin-bottom:8px">사실만 체크해 주세요. 심평원 등록·자격증·지정서와 다르면 게시하지 않습니다. 가장 중요한 4개가 첫 화면에 들어갑니다.</div>
-<div class="chk grid" id="feat">
-<label><input type="checkbox" value="specialist">전문의 원장이 직접 진료</label>
-<label><input type="checkbox" value="phd">의학박사 (학위증 사본 제출 가능)</label>
-<label><input type="checkbox" value="ct">CT 원내 촬영</label>
-<label><input type="checkbox" value="mri">MRI 원내 촬영</label>
-<label><input type="checkbox" value="xray">X-ray · 초음파 원내 검사</label>
-<label><input type="checkbox" value="bone">골밀도 검사</label>
-<label><input type="checkbox" value="endo">내시경 (위·대장)</label>
-<label><input type="checkbox" value="physio">물리치료실 · 도수치료</label>
-<label><input type="checkbox" value="auto">자동차보험 진료기관</label>
-<label><input type="checkbox" value="checkup">국가건강검진 지정기관</label>
-<label><input type="checkbox" value="baby">영유아 검진 · 예방접종</label>
-<label><input type="checkbox" value="night">야간 진료 (평일 18시 이후)</label>
-<label><input type="checkbox" value="sat">토요일 · 공휴일 진료</label>
-<label><input type="checkbox" value="lunch">점심시간 없이 진료</label>
-<label><input type="checkbox" value="park">주차 가능</label>
-<label><input type="checkbox" value="station">역·정류장 도보 3분 이내</label>
-<label><input type="checkbox" value="years">개원 10년 이상</label>
-<label><input type="checkbox" value="access">1층 · 엘리베이터 · 장애인 편의</label>
-</div>
-<label>그 밖의 사실 <small>한 줄에 하나. 예: "입원실 4병상", "영어 진료 가능"</small><textarea name="feat_extra"></textarea></label>
-<label>보유 장비·시설 목록 <small>쉼표 구분</small><input name="facilities" placeholder="CT실, X-ray실, 초음파실, 물리치료실, 주사실"></label>
-
-<h2>6. 디자인 선택 <small><a href="out/catalog/index.html" target="_blank">카탈로그에서 실제 화면 보기 ↗</a></small></h2>
-<label>첫 화면 유형</label>
-<div class="rad design">
-<label><input type="radio" name="design" value="B1" checked><b>B1 사진 + 예약 패널 (기본)</b><div class="prev" style="background:linear-gradient(90deg,#1d3a5c,#4a7aa8)">사진 배경 · 흰 패널(전화·시간)</div><span>외관·원장 사진이 있을 때. 전화·시간·길이 첫 화면에서 끝남</span></label>
-<label><input type="radio" name="design" value="B2"><b>B2 사실 칩 + 예약 패널</b><div class="prev" style="background:linear-gradient(160deg,#083a66,#0b4f8a)">네이비 · 전문의·장비 칩 4</div><span>사진이 없거나 약할 때. 강점이 글자로 바로 보임</span></label>
-<label><input type="radio" name="design" value="A1"><b>A1 풀화면 사진 + 큰 제목</b><div class="prev" style="background:linear-gradient(0deg,#111 20%,#6b8aa6)">사진 100% · 흰 큰 글자</div><span>사진이 좋을 때. 대학병원 느낌</span></label>
-<label><input type="radio" name="design" value="E1"><b>E1 어두운 톤 + 과목 타이포</b><div class="prev" style="background:#14191f;color:#2fd1b2">BRAND · 과목 큰 글자</div><span>치과·한의원 브랜딩. 실적 숫자는 넣지 않음</span></label>
-</div>
-<label>색</label>
-<div class="rad grid">
-<label><input type="radio" name="color" value="navy" checked><i class="sw" style="background:#0b4f8a"></i>네이비 (의원 기본)</label>
-<label><input type="radio" name="color" value="teal"><i class="sw" style="background:#1a8a7a"></i>틸 (치과)</label>
-<label><input type="radio" name="color" value="brown"><i class="sw" style="background:#7a5a2a"></i>브라운 (한의원)</label>
-<label><input type="radio" name="color" value="green"><i class="sw" style="background:#2f7d4f"></i>그린</label>
-<label><input type="radio" name="color" value="wine"><i class="sw" style="background:#7b2d3b"></i>와인</label>
-<label><input type="radio" name="color" value="">제작사 추천에 맡김</label>
-</div>
-<label>참고하고 싶은 병원 홈페이지 <small>주소 1~2개 (선택)</small><input name="refs"></label>
-
-<h2>7. 넣을 섹션 <small>기본 전부 ON. 빼고 싶은 것만 끄세요</small></h2>
-<div class="chk grid" id="sec">
-<label><input type="checkbox" value="features" checked>진료 환경 (5번 차별점 카드)</label>
-<label><input type="checkbox" value="fields" checked>진료 분야 (과목별 항목)</label>
-<label><input type="checkbox" value="doctors" checked disabled>의료진 (필수)</label>
-<label><input type="checkbox" value="photos" checked>시설 사진</label>
-<label><input type="checkbox" value="notices" checked>공지 (휴진·시간 변경)</label>
-<label><input type="checkbox" value="nonpaid" checked disabled>비급여 고지 (의료법 45조, 필수)</label>
-</div>
-<small>후기 · 전후사진 · 이벤트 · 건강칼럼은 의료법 56조 위험으로 제작하지 않습니다.</small>
-
-<h2>8. 지금 보내줄 수 있는 자료 <small>있는 것만 체크. 파일은 채팅으로</small></h2>
-<div class="chk grid" id="have">
-<label><input type="checkbox" value="photo_director">원장 사진 (진료실)</label>
-<label><input type="checkbox" value="photo_place">외관 · 내부 사진 (환자 없음)</label>
-<label><input type="checkbox" value="logo">로고 파일</label>
-<label><input type="checkbox" value="career">원장 약력 문서</label>
-<label><input type="checkbox" value="license">전문의 자격증 · 학위증 사본</label>
-<label><input type="checkbox" value="nonpaid">비급여 진료비 표 (게시 중인 것)</label>
-<label><input type="checkbox" value="biz">사업자등록번호</label>
-</div>
-<small>사진이 없으면 B2(사실 칩) 안을 추천합니다. 사진이 오면 B1/A1으로 바꿀 수 있습니다.</small>
-
-<h2>9. 기타</h2>
-<label>꼭 들어가야 할 것 · 싫은 것 <small>자유롭게</small><textarea name="notes"></textarea></label>
-<button type="submit">파일 만들기 (JSON 내려받기)</button>
-</form>
+<div class="bar"><i id="bar"></i></div>
+<div class="top" id="top" hidden><span><b id="stepno"></b> <span id="steptitle"></span></span><a id="reset">처음부터</a></div>
+<main id="main"></main>
+<div class="nav" id="nav" hidden><div class="in"><button class="ghost" id="prev">← 이전</button><button class="skip" id="skip">일단 넘어가기</button><button class="btn" id="next">다음 →</button></div></div>
 
 <script>
-const FEAT={ // 체크 → 사실 카드. 효과·비교 표현 없음
+// ---------- 데이터 ----------
+const DAYS=["월","화","수","목","금","토","일"];
+const TIMES=[];for(let h=7;h<=22;h++)for(const m of["00","30"])TIMES.push(`${String(h).padStart(2,"0")}:${m}`);
+const DEPTS=["내과","소아청소년과","이비인후과","정형외과","신경외과","외과","피부과","안과","산부인과","비뇨의학과","재활의학과","영상의학과","가정의학과","건강검진","치과","한의원 진료"];
+const FEAT={ // 키: [아이콘, 카드 제목, 설명] — 사실 서술만
  specialist:["소아","전문의 원장 직접 진료","전문의 원장이 처음부터 끝까지 직접 진료합니다."],
  phd:["신경","의학박사","학위증 사본 확인 후 게시합니다."],
  ct:["검진","CT 원내 촬영","CT 보유. 다른 병원에 가지 않고 원내에서 촬영합니다."],
@@ -154,29 +72,139 @@ const FEAT={ // 체크 → 사실 카드. 효과·비교 표현 없음
  station:["정형","역·정류장 도보 3분","대중교통으로 오기 편한 위치입니다."],
  years:["내과","개원 10년 이상","같은 자리에서 오래 진료해 왔습니다."],
  access:["재활","1층 · 엘리베이터 · 장애인 편의","휠체어·유모차 출입이 편합니다."]};
-const COLOR={navy:"#0b4f8a",teal:"#1a8a7a",brown:"#7a5a2a",green:"#2f7d4f",wine:"#7b2d3b"};
+const FEAT_LABEL={specialist:"전문의 원장 직접 진료",phd:"의학박사",ct:"CT 원내 촬영",mri:"MRI 원내 촬영",xray:"X-ray · 초음파",bone:"골밀도 검사",endo:"위·대장 내시경",physio:"물리치료 · 도수치료",auto:"자동차보험 진료기관",checkup:"국가건강검진 지정",baby:"영유아 검진 · 예방접종",night:"야간 진료",sat:"토 · 공휴일 진료",lunch:"점심시간 없이 진료",park:"주차 가능",station:"역 · 정류장 도보 3분",years:"개원 10년 이상",access:"1층 · 엘리베이터 · 장애인 편의"};
+const DESIGN={B1:["사진 + 예약 패널","기본. 외관·원장 사진이 있을 때"],B2:["사실 칩 + 예약 패널","사진이 없거나 약할 때. 강점이 글자로 보임"],A1:["풀화면 사진 + 큰 제목","사진이 좋을 때. 대학병원 느낌"],E1:["어두운 톤 + 과목 타이포","치과·한의원 브랜딩"]};
 const HERO={B1:"photo",B2:"fact",A1:"full",E1:"brand"};
-const lines=s=>s.split("\n").map(x=>x.trim()).filter(Boolean);
-const list=s=>s.split(",").map(x=>x.trim()).filter(Boolean);
-const pair=s=>lines(s).map(l=>l.split("=").map(x=>x.trim()));
-const checked=id=>[...document.querySelectorAll(`#${id} input:checked`)].map(i=>i.value);
-document.getElementById("f").onsubmit=e=>{
-  e.preventDefault();const f=new FormData(e.target),g=k=>(f.get(k)||"").trim();
-  const sec=checked("sec"),feats=checked("feat");
-  const features=sec.includes("features")?[...feats.map(k=>({icon:FEAT[k][0],title:FEAT[k][1],desc:FEAT[k][2]})),...lines(g("feat_extra")).map(t=>({icon:"",title:t,desc:""}))]:[];
-  const fields=sec.includes("fields")?lines(g("fields")).map(l=>{const[a,b]=l.split("|");return{dept:(a||"").trim(),items:list(b||"")}}).filter(x=>x.dept):[];
-  const d={_기획:{design:g("design"),color_name:g("color"),sections:sec,have:checked("have"),refs:g("refs"),notes:g("notes"),received:new Date().toISOString().slice(0,10)},
-    draft:true,slug:(g("domain").split(".")[0]||"").replace(/[^a-z0-9-]/gi,"").toLowerCase()||"clinic",
-    name:g("name"),kind:g("kind"),tagline:g("tagline"),phone:g("phone"),address:g("address"),transport:g("transport"),parking:g("parking"),
-    departments:list(g("departments")),hero_style:HERO[g("design")]||"photo",color:COLOR[g("color")]||"",
-    hours:pair(g("hours")),
-    doctors:lines(g("doctors")).map(l=>{const[a,b,c,d2,e2]=l.split("|").map(x=>(x||"").trim());return{name:a,title:b,license:"의사 면허",specialty:c,degree:d2,career:e2?e2.split(";").map(x=>x.trim()).filter(Boolean):[],photo:""}}),
-    features,fields,facilities:list(g("facilities")),photos:[],hero_photo:"",logo:"",notices:[],nonpaid:[],
-    booking_url:g("booking_url"),kakao_url:g("kakao_url"),blog_url:g("blog_url"),
-    founder:g("founder"),opened:g("opened"),biz_no:"확인 필요",domain:g("domain"),approved_by:"",approved_at:""};
-  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));
-  a.download=d.name+"_사전정보.json";a.click();
-  alert("내려받은 JSON 파일을 크몽 채팅으로 보내주세요. 1~2일 안에 샘플 링크를 드립니다.");
-};
+const COLOR={navy:["#0b4f8a","네이비 (의원 기본)"],teal:["#1a8a7a","틸 (치과)"],brown:["#7a5a2a","브라운 (한의원)"],green:["#2f7d4f","그린"],wine:["#7b2d3b","와인"]};
+const SECTIONS={features:"진료 환경 (차별점 카드)",fields:"진료 분야 (과목별 항목)",doctors:"의료진 (필수)",photos:"시설 사진",notices:"공지 (휴진·시간 변경)",nonpaid:"비급여 고지 (필수)"};
+const HAVE={photo_director:"원장 사진 (진료실)",photo_place:"외관 · 내부 사진",logo:"로고 파일",career:"원장 약력 문서",license:"전문의 자격증 · 학위증 사본",nonpaid:"비급여 진료비 표",biz:"사업자등록번호"};
+
+const blank=()=>({name:"",kind:"의원",phone:"",address:"",opened:"",depts:[],deptCustom:"",tagline:"",fields:{},
+  days:Object.fromEntries(DAYS.map(d=>[d,{on:d!=="일",s:"09:00",e:d==="토"?"13:00":"18:00"}])),lunch:{on:true,s:"13:00",e:"14:00"},
+  doctors:[{name:"",title:"원장",spec:"",degree:"",career:""}],feats:[],featExtra:"",facilities:"",design:"B1",color:"navy",refs:"",
+  sections:["features","fields","doctors","photos","notices","nonpaid"],have:[],booking:"",kakao:"",blog:"",domain:"",notes:""});
+let S;try{S=Object.assign(blank(),JSON.parse(localStorage.getItem("intake_v2")||"{}"))}catch{S=blank()}
+let step=+(localStorage.getItem("intake_v2_step")||0);
+const save=()=>{try{localStorage.setItem("intake_v2",JSON.stringify(S));localStorage.setItem("intake_v2_step",step)}catch{}};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sel=(k,v)=>`<select data-k="${k}">${TIMES.map(t=>`<option${t===v?" selected":""}>${t}</option>`).join("")}</select>`;
+
+// ---------- 스텝 ----------
+const STEPS=[
+{t:"병원 기본",r:()=>`<h2>병원 기본 정보</h2><p class="lead">네이버 플레이스에 등록된 그대로 적어 주세요.</p>
+<div class="q" data-req="name"><label>의료기관 명칭<i></i></label><input data-k="name" value="${esc(S.name)}" placeholder="예: 하늘정원내과의원"><div class="err">정식 명칭이 필요합니다</div></div>
+<div class="q"><span class="lb">종별</span><div class="cards">${["의원","치과의원","한의원","병원"].map(k=>`<button class="card${S.kind===k?" on":""}" data-set="kind" data-v="${k}"><b>${k}</b></button>`).join("")}</div></div>
+<div class="q" data-req="phone"><label>대표 전화<i></i></label><input data-k="phone" value="${esc(S.phone)}" inputmode="tel" placeholder="02-000-0000"><div class="err">전화번호가 필요합니다</div></div>
+<div class="q" data-req="address"><label>주소<i></i></label><input data-k="address" value="${esc(S.address)}" placeholder="도로명 주소, 층·호까지"><div class="err">주소가 필요합니다</div></div>
+<div class="q"><label>개원 시기</label><input data-k="opened" value="${esc(S.opened)}" placeholder="예: 2006년 3월"><span class="help">모르면 비워 두세요.</span></div>`},
+
+{t:"진료과목",r:()=>`<h2>진료과목</h2><p class="lead">시설·장비·인력을 갖춘 과목만 골라 주세요.</p>
+<div class="q" data-req="depts"><span class="lb">진료과목<i></i></span><div class="chips">${DEPTS.map(d=>`<button class="chip${S.depts.includes(d)?" on":""}" data-toggle="depts" data-v="${d}">${d}</button>`).join("")}</div>
+<input data-k="deptCustom" value="${esc(S.deptCustom)}" placeholder="목록에 없으면 직접 입력 (쉼표 구분)" style="margin-top:10px"><div class="err">과목을 하나 이상 골라 주세요</div></div>
+${S.depts.length?`<div class="q"><span class="lb">과목별 주요 진료 항목</span><span class="help" style="margin:0 0 10px">환자가 검색하는 증상·검사 이름만. 효과·결과 표현은 넣지 않습니다.</span>
+${S.depts.map(d=>`<input data-field="${esc(d)}" value="${esc(S.fields[d]||"")}" placeholder="${esc(d)}: 예) 디스크, 협착증, 두통 (쉼표 구분)" style="margin-bottom:8px">`).join("")}</div>`:""}
+<div class="q"><label>한 줄 소개</label><input data-k="tagline" value="${esc(S.tagline)}" placeholder="예: 신경외과 전문의가 직접 진료하는 동네 의원"><span class="help">사실만. "최고·유일·완치" 같은 표현은 빌드에서 막힙니다.</span></div>`},
+
+{t:"진료시간",r:()=>`<h2>진료시간</h2><p class="lead">요일을 누르면 진료/휴진이 바뀝니다. 아래 빠른 설정을 먼저 눌러 보세요.</p>
+<div class="presets"><button class="chip" data-preset="a">평일 09–18 · 토 09–13</button><button class="chip" data-preset="b">평일 09–19 · 토 09–14</button><button class="chip" data-preset="c">토요일 휴진</button></div>
+<div class="q" data-req="days"><div class="days">${DAYS.map(d=>{const x=S.days[d];return`<div class="day${x.on?"":" off"}"><button class="tg" data-day="${d}">${d}${x.on?"":" 휴진"}</button>${sel("d.s."+d,x.s)}<span>–</span>${sel("d.e."+d,x.e)}</div>`}).join("")}</div><div class="err">진료 요일이 하나는 있어야 합니다</div></div>
+<div class="q"><span class="lb">점심시간</span><div class="day${S.lunch.on?"":" off"}"><button class="tg" data-lunch="1">${S.lunch.on?"점심":"없음"}</button>${sel("l.s",S.lunch.s)}<span>–</span>${sel("l.e",S.lunch.e)}</div><span class="help">점심시간 없이 진료하면 버튼을 눌러 "없음"으로.</span></div>`},
+
+{t:"의료진",r:()=>`<h2>의료진</h2><p class="lead">전문의·학위 표시는 나중에 사본 확인 후 게시합니다. 지금은 적기만 하세요.</p>
+<div class="q" data-req="doctors">${S.doctors.map((d,i)=>`<div class="doc">${S.doctors.length>1?`<button class="x" data-rm="${i}" title="삭제">×</button>`:""}
+<div class="row2"><input data-doc="${i}.name" value="${esc(d.name)}" placeholder="성명${i===0?" (필수)":""}"><input data-doc="${i}.title" value="${esc(d.title)}" placeholder="직함 (원장·부원장)"></div>
+<div class="row2"><input data-doc="${i}.spec" value="${esc(d.spec)}" placeholder="전문의 자격 (예: 신경외과 전문의)"><input data-doc="${i}.degree" value="${esc(d.degree)}" placeholder="학위 (예: 의학박사)"></div>
+<textarea data-doc="${i}.career" placeholder="약력 — 한 줄에 하나&#10;○○대학교 의과대학 졸업&#10;○○병원 전공의 수료">${esc(d.career)}</textarea></div>`).join("")}
+<div class="err">의료진 한 명의 성명은 필요합니다</div></div>
+<button class="add" data-add="1">+ 의료진 추가</button>`},
+
+{t:"우리 병원의 다른 점",r:()=>`<h2>우리 병원의 다른 점</h2><p class="lead">해당하는 것을 전부 누르세요. 앞의 4개가 첫 화면에, 나머지는 "진료 환경" 카드에 들어갑니다.</p>
+<div class="note">사실만. 심평원 등록·자격증·지정서와 다르면 게시하지 않습니다 (의료법 56조).</div>
+<div class="q"><div class="chips">${Object.entries(FEAT_LABEL).map(([k,v])=>`<button class="chip${S.feats.includes(k)?" on":""}" data-toggle="feats" data-v="${k}">${v}</button>`).join("")}</div></div>
+<div class="q"><label>그 밖의 사실</label><textarea data-k="featExtra" placeholder="한 줄에 하나. 예) 입원실 4병상 / 영어 진료 가능">${esc(S.featExtra)}</textarea></div>
+<div class="q"><label>장비 · 시설 목록</label><input data-k="facilities" value="${esc(S.facilities)}" placeholder="CT실, X-ray실, 초음파실, 물리치료실 (쉼표 구분)"></div>`},
+
+{t:"디자인",r:()=>`<h2>첫 화면 디자인</h2><p class="lead">내용은 귀 병원 정보로 바뀝니다. 나중에 바꿀 수 있어요. <a href="out/catalog/index.html" target="_blank" style="color:var(--c)">카탈로그 크게 보기 ↗</a></p>
+<div class="q"><div class="dcards">${Object.entries(DESIGN).map(([k,[a,b]])=>`<button class="dcard${S.design===k?" on":""}" data-set="design" data-v="${k}"><img src="assets/design_${k}.jpg" alt="${k}" loading="lazy"><div><b>${k} · ${a}</b><small>${b}</small></div></button>`).join("")}</div></div>
+<div class="q"><span class="lb">색</span><div class="chips">${Object.entries(COLOR).map(([k,[h,n]])=>`<button class="chip${S.color===k?" on":""}" data-set="color" data-v="${k}"><i class="sw" style="background:${h}"></i>${n}</button>`).join("")}<button class="chip${S.color===""?" on":""}" data-set="color" data-v="">추천에 맡김</button></div></div>
+<div class="q"><label>참고하고 싶은 병원 홈페이지</label><input data-k="refs" value="${esc(S.refs)}" placeholder="주소 1~2개 (선택)"></div>`},
+
+{t:"넣을 것 · 자료",r:()=>`<h2>넣을 섹션과 보낼 자료</h2><p class="lead">섹션은 기본 전부 켜져 있어요. 빼고 싶은 것만 끄세요.</p>
+<div class="q"><span class="lb">넣을 섹션</span><div class="chips">${Object.entries(SECTIONS).map(([k,v])=>{const fixed=k==="doctors"||k==="nonpaid";return`<button class="chip${S.sections.includes(k)?" on":""}" data-toggle="sections" data-v="${k}"${fixed?" disabled":""}>${v}</button>`}).join("")}</div><span class="help">후기 · 전후사진 · 이벤트 · 건강칼럼은 의료법 56조 위험으로 제작하지 않습니다.</span></div>
+<div class="q"><span class="lb">지금 보내줄 수 있는 자료</span><div class="chips">${Object.entries(HAVE).map(([k,v])=>`<button class="chip${S.have.includes(k)?" on":""}" data-toggle="have" data-v="${k}">${v}</button>`).join("")}</div><span class="help">파일은 크몽 채팅으로 따로 보내 주세요. 사진이 없으면 B2 디자인을 추천합니다.</span></div>`},
+
+{t:"연락 · 기타",r:()=>`<h2>예약 링크와 기타 요청</h2><p class="lead">홈페이지에는 예약 폼을 두지 않고 아래 링크로만 연결합니다 (개인정보 미수집).</p>
+<div class="q"><label>네이버 예약 주소</label><input data-k="booking" value="${esc(S.booking)}" placeholder="https://booking.naver.com/..."></div>
+<div class="q"><label>카카오톡 채널 주소</label><input data-k="kakao" value="${esc(S.kakao)}" placeholder="https://pf.kakao.com/..."></div>
+<div class="q"><label>블로그 · SNS 주소</label><input data-k="blog" value="${esc(S.blog)}" placeholder="https://blog.naver.com/..."></div>
+<div class="q"><label>희망 도메인</label><input data-k="domain" value="${esc(S.domain)}" placeholder="예: skyclinic.co.kr (없으면 후보 3개 제안)"></div>
+<div class="q"><label>꼭 들어가야 할 것 · 싫은 것</label><textarea data-k="notes" placeholder="자유롭게">${esc(S.notes)}</textarea></div>`}];
+
+// ---------- 화면 ----------
+const main=document.getElementById("main"),nav=document.getElementById("nav"),hdr=document.getElementById("top");
+function render(){
+  save();const n=STEPS.length;
+  document.getElementById("bar").style.width=(step<=0?0:step>n?100:step/n*100)+"%";
+  hdr.hidden=nav.hidden=!(step>=1&&step<=n);
+  if(step<=0){main.innerHTML=`<div class="start"><h1>병·의원 홈페이지<br>사전 정보</h1><p class="lead">약 <b>10분</b>. 이 답으로 귀 병원 샘플 홈페이지를 바로 만들어 보여드립니다.</p>
+<ul><li>✓ <b>모르는 칸은 비워도</b> 됩니다. 제작사가 공개 등록정보로 채웁니다.</li><li>✓ 중간에 닫아도 이 기기에 <b>자동 저장</b>됩니다.</li><li>✓ 끝나면 파일 하나가 내려받아집니다. <b>크몽 채팅에 첨부</b>해 주세요.</li></ul>
+<button class="btn big" id="go">시작하기 →</button>
+<p class="help" style="margin-top:20px">홈페이지에는 의료법 제57조 제3항 심의 제외 항목(명칭·주소·전화·진료과목·의료진·진료시간·시설·비급여 고지)만 싣습니다. 이 폼은 서버로 전송되지 않습니다.</p></div>`;
+    document.getElementById("go").onclick=()=>{step=1;render();scrollTo(0,0)};return}
+  if(step>n){const d=toJSON();main.innerHTML=`<div class="done"><h1>끝났습니다 👏</h1><p class="lead">아래 버튼으로 파일을 내려받아 크몽 채팅에 첨부해 주세요.</p>
+<div class="box"><button class="btn big" id="dl">파일 내려받기 (${esc(d.name||"병원")}_사전정보.json)</button><div class="summary">${esc(summary(d))}</div></div>
+<ol><li><b>1~2일 안</b>에 귀 병원 정보가 들어간 샘플 링크를 드립니다.</li><li>샘플 확인 후 결제. <b>수정 2회</b> 포함.</li><li>사진·약력·비급여표는 승인 단계에서 따로 받습니다.</li></ol>
+<p><button class="ghost" id="back">← 수정하러 돌아가기</button></p></div>`;
+    document.getElementById("dl").onclick=()=>download(d);document.getElementById("back").onclick=()=>{step=n;render()};return}
+  document.getElementById("stepno").textContent=`${step}/${n}`;document.getElementById("steptitle").textContent=STEPS[step-1].t;
+  main.innerHTML=STEPS[step-1].r();document.getElementById("skip").style.display="none";
+  document.getElementById("next").textContent=step===n?"완료 →":"다음 →";
+}
+function validate(){
+  let ok=true;for(const q of main.querySelectorAll(".q[data-req]")){const k=q.dataset.req;let bad=false;
+    if(k==="depts")bad=!(S.depts.length||S.deptCustom.trim());else if(k==="days")bad=!DAYS.some(d=>S.days[d].on);else if(k==="doctors")bad=!S.doctors[0].name.trim();else bad=!S[k].trim();
+    q.classList.toggle("bad",bad);if(bad)ok=false}
+  return ok}
+document.getElementById("next").onclick=()=>{if(!validate()){document.getElementById("skip").style.display="inline";main.querySelector(".q.bad")?.scrollIntoView({block:"center"});return}step++;render();scrollTo(0,0)};
+document.getElementById("skip").onclick=()=>{step++;render();scrollTo(0,0)};
+document.getElementById("prev").onclick=()=>{step--;render();scrollTo(0,0)};
+document.getElementById("reset").onclick=()=>{if(confirm("입력한 내용을 모두 지우고 처음부터 할까요?")){S=blank();step=0;render()}};
+
+// 입력 → 상태 (포커스 유지: 텍스트는 재렌더 안 함)
+main.addEventListener("input",e=>{const t=e.target;
+  if(t.dataset.k){const k=t.dataset.k;if(k.startsWith("d."))S.days[k.slice(4)][k[2]]=t.value;else if(k.startsWith("l."))S.lunch[k[2]]=t.value;else S[k]=t.value}
+  else if(t.dataset.field!==undefined)S.fields[t.dataset.field]=t.value;
+  else if(t.dataset.doc){const[i,f]=t.dataset.doc.split(".");S.doctors[i][f]=t.value}
+  t.closest(".q")?.classList.remove("bad");save()});
+main.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.id)return;const d=b.dataset;
+  if(d.set!==undefined){S[d.set]=d.v}
+  else if(d.toggle){const a=S[d.toggle],i=a.indexOf(d.v);i<0?a.push(d.v):a.splice(i,1);if(d.toggle==="depts"&&i>=0)delete S.fields[d.v]}
+  else if(d.day){S.days[d.day].on=!S.days[d.day].on}else if(d.lunch){S.lunch.on=!S.lunch.on}
+  else if(d.preset){const p=d.preset;DAYS.forEach(x=>{const w=S.days[x];if(p==="c"){if(x==="토")w.on=false;return}w.on=x!=="일";w.s="09:00";w.e=x==="토"?(p==="a"?"13:00":"14:00"):(p==="a"?"18:00":"19:00")})}
+  else if(d.add){S.doctors.push({name:"",title:"",spec:"",degree:"",career:""})}else if(d.rm){S.doctors.splice(+d.rm,1)}
+  else return;
+  e.preventDefault();render()});
+
+// ---------- 출력 (build.py 입력 스키마와 동일) ----------
+const lines=s=>s.split("\n").map(x=>x.trim()).filter(Boolean),list=s=>s.split(",").map(x=>x.trim()).filter(Boolean);
+function hoursOut(){const g=[];const key=d=>S.days[d].on?`${S.days[d].s} – ${S.days[d].e}`:"휴진";
+  for(const d of DAYS){const k=key(d),h=g.find(x=>x.k===k);h?h.d.push(d):g.push({k,d:[d]})}
+  const out=g.filter(x=>x.k!=="휴진").map(x=>[x.d.length===1?x.d[0]+"요일":x.d.join("·"),x.k]);
+  if(S.lunch.on)out.push(["점심시간",`${S.lunch.s} – ${S.lunch.e}`]);
+  const off=g.find(x=>x.k==="휴진");if(off)out.push([off.d.map(d=>d+"요일").join("·")+(off.d.includes("일")?"·공휴일":""),"휴진"]);else out.push(["공휴일","휴진"]);return out}
+function toJSON(){const depts=[...S.depts,...list(S.deptCustom)];
+  const features=S.sections.includes("features")?[...S.feats.map(k=>({icon:FEAT[k][0],title:FEAT[k][1],desc:FEAT[k][2]})),...lines(S.featExtra).map(t=>({icon:"",title:t,desc:""}))]:[];
+  const fields=S.sections.includes("fields")?depts.map(d=>({dept:d,items:list(S.fields[d]||"")})).filter(x=>x.items.length):[];
+  return{_기획:{design:S.design,color_name:S.color,sections:S.sections,have:S.have,refs:S.refs,notes:S.notes,received:new Date().toISOString().slice(0,10),form:"intake v2"},
+    draft:true,slug:(S.domain.split(".")[0]||"").replace(/[^a-z0-9-]/gi,"").toLowerCase()||"clinic",
+    name:S.name.trim(),kind:S.kind,tagline:S.tagline.trim(),phone:S.phone.trim(),address:S.address.trim(),transport:"",parking:S.feats.includes("park")?"주차 가능 (상세 확인 필요)":"",
+    departments:depts,hero_style:HERO[S.design],color:COLOR[S.color]?.[0]||"",hours:hoursOut(),
+    doctors:S.doctors.filter(d=>d.name.trim()).map(d=>({name:d.name.trim(),title:d.title.trim(),license:"의사 면허",specialty:d.spec.trim(),degree:d.degree.trim(),career:lines(d.career),photo:""})),
+    features,fields,facilities:list(S.facilities),photos:[],hero_photo:"",logo:"",notices:[],nonpaid:[],
+    booking_url:S.booking.trim(),kakao_url:S.kakao.trim(),blog_url:S.blog.trim(),founder:S.doctors[0]?.name.trim()||"",opened:S.opened.trim(),biz_no:"확인 필요",domain:S.domain.trim(),approved_by:"",approved_at:""}}
+const summary=d=>`${d.name||"(명칭 없음)"} · ${d.kind} · ${d.departments.join(", ")||"과목 없음"}\n디자인 ${S.design} · ${COLOR[S.color]?.[1]||"색 추천"} · 의료진 ${d.doctors.length}명 · 차별점 ${S.feats.length}개\n진료시간 ${d.hours.map(h=>h.join(" ")).join(" / ")}`;
+function download(d){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));a.download=(d.name||"병원")+"_사전정보.json";a.click()}
+render();
 </script>
+<footer>이 폼은 서버로 전송되지 않습니다 · 입력 내용은 이 기기에만 저장됩니다</footer>
 </body></html>
